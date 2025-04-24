@@ -8,33 +8,30 @@ import { DomainSearchSection } from "./_components/domain-search-section";
 import { DomainDetailsSection } from "./_components/domain-details-section";
 import { PageFooter } from "@/components/layout/footer";
 import { PageBackground } from "@/components/layout/background";
-import { useReadContract } from "wagmi";
-import { ContractDomainNameNFT } from "@/constans/contracts";
-import { DomainNameNFTABI } from "@/lib/abis/DomainNameNFTABI";
+import { useDomainRegistereds } from "@/hooks/query/graphql/useDomainRegistereds";
 
 export default function Home() {
   const [selectedDomain, setSelectedDomain] = useState<PNS | null>(null);
+  const { data, isLoading } = useDomainRegistereds();
+  
+  const checkDomainAvailability = (domainName: string) => {
+    if (!domainName) return true;
+    const fullDomainName = `${domainName}.pharos`;
+    return !data?.some(domain => domain.domain.toLowerCase() === fullDomainName.toLowerCase());
+  };
 
   const handleDomainSelect = (domain: PNS) => {
-    setSelectedDomain(domain);
+    const isAvailable = checkDomainAvailability(domain.name);
+    setSelectedDomain({
+      ...domain,
+      available: isAvailable
+    });
   };
 
   const handleReset = () => {
     setSelectedDomain(null);
   };
 
-  const domainNameArg = selectedDomain ? `${selectedDomain.name}.pharos` : "";
-
-  const { data: isAvailable } = useReadContract({
-    address: ContractDomainNameNFT,
-    abi: DomainNameNFTABI,
-    functionName: "isAvailable",
-    args: [domainNameArg],
-    query: {
-      enabled: !!selectedDomain,
-      refetchInterval: 3000,
-    }
-  });
 
   return (
     <Column fillWidth paddingY="80" paddingX="s" horizontal="center" flex={1} className={styles.container}>
@@ -87,8 +84,6 @@ export default function Home() {
           >
             Pharos Name Service
           </Text>
-
-          {/* Only show availability status when a domain is selected */}
           {selectedDomain && (
             <Text
               variant="body-strong-l"
@@ -98,12 +93,15 @@ export default function Home() {
                 textAlign: "center"
               }}
             >
-              Domain is {isAvailable ? "available!" : "not available!"}
+              Domain is {selectedDomain.available ? "available!" : "not available!"}
             </Text>
           )}
-
           {!selectedDomain ? (
-            <DomainSearchSection onDomainSelect={handleDomainSelect} />
+            <DomainSearchSection 
+              onDomainSelect={handleDomainSelect} 
+              checkAvailability={checkDomainAvailability}
+              isLoading={isLoading}
+            />
           ) : (
             <DomainDetailsSection domain={selectedDomain} onReset={handleReset} />
           )}
