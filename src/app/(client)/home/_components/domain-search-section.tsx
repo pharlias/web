@@ -40,8 +40,8 @@ export const DomainSearchSection = ({
   }, [domainName, checkAvailability]);
 
   const calculatePrice = (name: string) => {
-    const basePrice = 0.00001;
-    const lengthFactor = Math.max(1, 10 - name.length) * 0.001;
+    const basePrice = 0.0001;
+    const lengthFactor = Math.max(1, 10 - name.length) * 0.00001;
     return (basePrice + lengthFactor).toFixed(4);
   };
 
