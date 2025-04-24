@@ -63,6 +63,10 @@ export const DomainSearchSection = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const sanitizedInput = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    if (sanitizedInput.length > 10) {
+      setDomainName(sanitizedInput.slice(0, 10));
+      return;
+    }
     setDomainName(sanitizedInput);
   };
 
