@@ -65,7 +65,7 @@ const meta = {
 const og = {
   title: meta.title,
   description: meta.description,
-  image: "/images/cover.jpg",
+  image: "/trademark/icon-light.svg",
 };
 
 // default schema data

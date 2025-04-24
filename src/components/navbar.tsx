@@ -82,7 +82,7 @@ export default function Navbar(): JSX.Element {
         vertical='center'
       >
         <Row gap="12" vertical="center">
-          <Logo size="s" icon={true} iconSrc={linksLogo} href={linksLogo} wordmark={false} />
+          <Logo size="s" icon={true} iconSrc={linksLogo} href={"/home"} wordmark={false} />
           <Text size="m">Pharlias</Text>
         </Row>
         <Row 

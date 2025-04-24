@@ -161,7 +161,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
             whiteSpace: 'nowrap'
           }}
         >
-          {nft.name}
+          {nft.name}.pharos
         </Text>
 
         <Text size='s' variant="label-default-s" onBackground="neutral-medium" style={{ color: '#5f5f5f' }}>
@@ -210,12 +210,12 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
             }}
             onMouseOver={(e) => {
               if (!isAddingToWallet && !isInWallet) {
-                e.currentTarget.style.backgroundColor = '#e04848'; // slightly darker red on hover
+                e.currentTarget.style.backgroundColor = '#e04848';
               }
             }}
             onMouseOut={(e) => {
               if (!isAddingToWallet && !isInWallet) {
-                e.currentTarget.style.backgroundColor = '#FF5757'; // revert to original
+                e.currentTarget.style.backgroundColor = '#FF5757';
               }
             }}
           >

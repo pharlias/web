@@ -8,10 +8,10 @@ const configApp = {
     explorer: "https://pharosscan.xyz"
   },
   links: {
-    github: "https://github.com",
+    github: "https://github.com/pharlias",
     docs: "https://gitbook.io",
     twitter: "https://x.com",
-    logo: "https://res.cloudinary.com/dutlw7bko/image/upload/v1743290524/americanolabs/kdfekme0elfehvlv22ra.png"
+    logo: "/trademark/icon-light.svg"
   },
   routes: [
     {
