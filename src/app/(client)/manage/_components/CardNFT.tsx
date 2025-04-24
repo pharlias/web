@@ -94,6 +94,10 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
           Registered on: {formatDate(nft.blockTimestamp)}
         </Text>
 
+        <Text size='s' variant="label-default-s" onBackground="neutral-medium" style={{ color: '#5f5f5f' }}>
+          Expired at: {formatDate(nft.expiresAt)}
+        </Text>
+
         <Line />
 
         <Row fillWidth vertical="center" horizontal="space-between">

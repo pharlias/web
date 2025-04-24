@@ -1,6 +1,6 @@
 "use client"
 import { useDomainRegistereds } from '@/hooks/query/graphql/useDomainRegistereds';
-import { Background, Column, Fade, Flex, Grid, IconButton, Row, Text } from '@/ui/components';
+import { Background, Column, Fade, Flex, Grid, IconButton, Text } from '@/ui/components';
 import { ScrollToTop } from '@/ui/components/ScrollToTop';
 import React from 'react';
 import CardNFT from './_components/CardNFT';
