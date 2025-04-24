@@ -1,0 +1,103 @@
+.activeButton {
+  border: 1px solid var(--neutral-border-medium);
+}
+
+.navIcon {
+  display: none;
+  transition: transform 0.3s ease;
+
+  @media (max-width: 850px) {
+    display: block;
+  }
+}
+
+.navMenuDesktop {
+  @media (max-width: 850px) {
+    display: none;
+  }
+
+  button {
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.navMenuMobileContainer {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform-origin: top right;
+
+  @media (min-width: 850px) {
+    display: none;
+  }
+}
+
+.navLinkMobile {
+  padding: 25px 10px;
+}
+
+/* Menu backdrop overlay */
+.menuBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9;
+  opacity: 0;
+
+  @media (min-width: 850px) {
+    display: none;
+  }
+}
+
+/* Animation classes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+    pointer-events: none;
+  }
+}
+
+/* Backdrop animations */
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOutBackdrop {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

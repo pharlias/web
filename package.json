@@ -1,0 +1,50 @@
+{
+  "name": "@once-ui-system/nextjs-starter",
+  "version": "0.6",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "export": "next export",
+    "build": "next build",
+    "start": "next start",
+    "biome:check": "npx @biomejs/biome check .",
+    "biome:fix": "npx @biomejs/biome format --write .",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@floating-ui/react-dom": "^2.1.1",
+    "@rainbow-me/rainbowkit": "^2.2.4",
+    "@tanstack/react-query": "^5.74.4",
+    "@wagmi/core": "^2.16.7",
+    "axios": "^1.8.4",
+    "classnames": "^2.5.1",
+    "compressorjs": "^1.2.1",
+    "ethers": "^6.13.5",
+    "graphql-request": "^7.1.2",
+    "next": "15.2.3",
+    "postcss": "^8.4.39",
+    "postcss-preset-env": "^9.5.15",
+    "prismjs": "^1.29.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-icons": "^5.2.1",
+    "sass": "^1.77.6",
+    "sharp": "^0.33.4",
+    "viem": "~2.27.2",
+    "wagmi": "^2.14.16"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@csstools/postcss-global-data": "^2.1.1",
+    "@types/node": "20.17.23",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2",
+    "postcss-custom-media": "^10.0.7",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "typescript": "5.8.2"
+  },
+  "overrides": {
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.2"
+  },
+  "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f"
+}

@@ -1,0 +1,1 @@
+export const ContractDomainNameNFT = "0xeBf7d1872966FE6254caa8154b56bE4701BC3BA8";

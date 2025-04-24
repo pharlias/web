@@ -1,0 +1,74 @@
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$success-color: #10b981;
+$error-color: #ef4444;
+$warning-color: #f59e0b;
+$info-color: #3b82f6;
+$neutral-color: #6b7280;
+$card-bg: rgba(255, 255, 255, 0.05);
+$card-border: rgba(255, 255, 255, 0.1);
+$text-primary: rgba(255, 255, 255, 0.9);
+$text-secondary: rgba(255, 255, 255, 0.6);
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.container {
+  min-height: 100vh;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.mainCard {
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid $card-border;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.contentContainer {
+  min-height: 60vh;
+  position: relative;
+}
+
+.inputName {
+  width: 80vw;
+  max-width: 400px;
+}

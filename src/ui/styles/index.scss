@@ -1,0 +1,32 @@
+@use "@/ui/styles/spacing.scss";
+@use "@/ui/styles/border.scss";
+@use "@/ui/styles/color.scss";
+@use "@/ui/styles/background.scss";
+@use "@/ui/styles/typography.scss";
+@use "@/ui/styles/global.scss";
+@use "@/ui/styles/layout.scss";
+@use "@/ui/styles/shadow.scss";
+@use "@/ui/styles/size.scss";
+@use "@/ui/styles/display.scss";
+@use "@/ui/styles/position.scss";
+@use "@/ui/styles/grid.scss";
+@use "@/ui/styles/flex.scss";
+@use "@/ui/styles/utilities.scss";
+
+#domain-name {
+  height: 70px;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+#domain-name {
+  border-bottom-left-radius: 0;
+}
+
+#domain-button > div {
+  justify-content: space-between;
+  justify-items: center;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
