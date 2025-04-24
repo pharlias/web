@@ -107,7 +107,7 @@ export default function RootLayout({
       </head>
       <ThemeProvider>
         <ToastProvider>
-          <Column as="body" fillWidth fillHeight style={{ height: "100vh" }} margin="0" padding="0">
+          <Column as="body" id="body-container" fillWidth fillHeight className="min-height-100" style={{ height: "100vh", minHeight:"100vh" }} margin="0" padding="0">
             <Providers>
               <Background
                 position="absolute"

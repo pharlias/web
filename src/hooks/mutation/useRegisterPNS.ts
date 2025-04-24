@@ -1,17 +1,23 @@
-import { ContractDomainNameNFT } from "@/constans/contracts";
-import { DomainNameNFTABI } from "@/lib/abis/DomainNameNFTABI";
+import { ContractRentRegistrar } from "@/constans/contracts";
+// import { DomainNameNFTABI } from "@/lib/abis/DomainNameNFTABI";
+import { RentRegistrarABI } from "@/lib/abis/RentRegistrarABI";
 import api from "@/lib/api";
 import { config } from "@/lib/wagmi";
 import { CreatePNS } from "@/types/create-pns.type";
 import { useMutation } from "@tanstack/react-query";
 import { waitForTransactionReceipt, writeContract, readContract } from "@wagmi/core";
 import { useState } from "react";
+import { parseGwei } from "viem";
+import { useAccount } from "wagmi";
 
 type Status = "idle" | "loading" | "success" | "error";
 type HexAddress = `0x${string}`;
 
 export const useRegisterPNS = () => {
   const [txHash, setTxHash] = useState<HexAddress | null>(null);
+
+  const { address } = useAccount()
+
   const [steps, setSteps] = useState<
     Array<{
       step: number;
@@ -70,22 +76,49 @@ export const useRegisterPNS = () => {
           })
         );
 
-        const registrationFee = await readContract(config, {
-          address: ContractDomainNameNFT,
-          abi: DomainNameNFTABI,
-          functionName: "registrationFee",
+        // const registrationFee = await readContract(config, {
+        //   address: ContractDomainNameNFT,
+        //   abi: DomainNameNFTABI,
+        //   functionName: "registrationFee",
+        // }) as bigint;
+
+        // const txHash = await writeContract(config, {
+        //   address: ContractDomainNameNFT,
+        //   abi: DomainNameNFTABI,
+        //   functionName: "registerDomain",
+        //   args: [
+        //     `${name}.pharos`,
+        //     response.metadataURI
+        //   ],
+        //   value: registrationFee,
+        // });
+
+        const price = await readContract(config, {
+          address: ContractRentRegistrar,
+          abi: RentRegistrarABI,
+          functionName: "rentPrice",
+          args: [
+            BigInt(1)
+          ]
         }) as bigint;
 
         const txHash = await writeContract(config, {
-          address: ContractDomainNameNFT,
-          abi: DomainNameNFTABI,
-          functionName: "registerDomain",
+          address: ContractRentRegistrar,
+          abi: RentRegistrarABI,
+          functionName: "register",
           args: [
-            `${name}.pharos`,
+            `${name}`,
+            address,
+            BigInt(1),
             response.metadataURI
           ],
-          value: registrationFee,
+          value: price,
+          gas: BigInt(300_000), 
+          maxFeePerGas: parseGwei('10'), 
+          maxPriorityFeePerGas: parseGwei('2'),
         });
+
+        console.log("txHash = ", txHash)
 
         setTxHash(txHash);
 
@@ -103,6 +136,7 @@ export const useRegisterPNS = () => {
         );
 
         return result;
+        // return;
       } catch (e) {
         console.error("Error", e);
         setSteps((prev) =>
