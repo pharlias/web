@@ -9,7 +9,7 @@ export const useDomainRegisteredsUser = () => {
   const { address } = useAccount();
 
   const { data, isLoading, isError } = useQuery<DomainRegisteredsType>({
-    queryKey: ["domainRegistereds", address],
+    queryKey: ["domainRegisteredsUser", address],
     queryFn: async (): Promise<DomainRegisteredsType> => {
       return await request<DomainRegisteredsType>(
         API_SUBGRAPH,
