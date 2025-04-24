@@ -9,7 +9,7 @@ export default function Page() {
   const { data } = useDomainRegistereds();
 
   return (
-    <Column fillWidth paddingY="80" paddingX="s" horizontal="center" flex={1}>
+    <Column fillWidth paddingTop="80" paddingX="s" horizontal="center" flex={1}>
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
       </ScrollToTop>
@@ -38,6 +38,9 @@ export default function Page() {
         horizontal="center"
         border="neutral-alpha-weak"
         fillWidth
+        style={{
+          minHeight: "80vh"
+        }}
       >
         <Background
           mask={{
