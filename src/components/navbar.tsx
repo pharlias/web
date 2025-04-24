@@ -18,18 +18,15 @@ export default function Navbar(): JSX.Element {
 
   const toggleMenu = (): void => {
     if (isOpen) {
-      // Start closing animation
       setIsAnimating(true)
       setAnimationState('closing')
 
-      // Only hide the menu after animation completes
       setTimeout(() => {
         setIsOpen(false)
         setIsAnimating(false)
         setAnimationState(null)
       }, 300)
     } else {
-      // Open menu immediately
       setIsOpen(true)
       setAnimationState('opening')
     }
@@ -82,12 +79,17 @@ export default function Navbar(): JSX.Element {
         paddingRight="32"
         paddingLeft="32"
         paddingY="20"
+        vertical='center'
       >
         <Row gap="12" vertical="center">
           <Logo size="s" icon={true} iconSrc={linksLogo} href={linksLogo} wordmark={false} />
-          <Text size="m">App</Text>
+          <Text size="m">Pharlias</Text>
         </Row>
-        <Row gap="12" className={styles.navMenuDesktop}>
+        <Row 
+        gap="12" 
+        vertical='center'
+        hide='m'
+        >
           {routes.map((route) => (
             <Button
               key={route.label}
@@ -121,11 +123,11 @@ export default function Navbar(): JSX.Element {
         <NavIcon
           onClick={toggleMenu}
           isActive={isOpen || isAnimating}
-          className={styles.navIcon}
+          hide='l'
+          show='m'
         />
       </Row>
 
-      {/* Semi-transparent background overlay */}
       {(isOpen || isAnimating) && (
         <div
           ref={backdropRef}
@@ -157,6 +159,7 @@ export default function Navbar(): JSX.Element {
           background="surface"
           border="neutral-medium"
           borderWidth={1}
+          vertical='center'
           className={classNames(
             styles.navMenuMobileContainer,
           )}

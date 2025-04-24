@@ -5,31 +5,35 @@
 .navIcon {
   display: none;
   transition: transform 0.3s ease;
+}
 
-  @media (max-width: 850px) {
+@media (max-width: 1200px) {
+  .navIcon {
     display: block;
   }
 }
 
-.navMenuDesktop {
-  @media (max-width: 850px) {
+.navMenuDesktop button {
+  transition: transform 0.2s ease;
+}
+
+.navMenuDesktop button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1200px) {
+  .navMenuDesktop {
     display: none;
-  }
-
-  button {
-    transition: transform 0.2s ease;
-
-    &:hover {
-      transform: translateY(-2px);
-    }
   }
 }
 
 .navMenuMobileContainer {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   transform-origin: top right;
+}
 
-  @media (min-width: 850px) {
+@media (min-width: 1200px) {
+  .navMenuMobileContainer {
     display: none;
   }
 }
@@ -38,7 +42,6 @@
   padding: 25px 10px;
 }
 
-/* Menu backdrop overlay */
 .menuBackdrop {
   position: fixed;
   top: 0;
@@ -48,13 +51,14 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9;
   opacity: 0;
+}
 
-  @media (min-width: 850px) {
+@media (min-width: 1200px) {
+  .menuBackdrop {
     display: none;
   }
 }
 
-/* Animation classes */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -80,7 +84,6 @@
   }
 }
 
-/* Backdrop animations */
 @keyframes fadeInBackdrop {
   from {
     opacity: 0;

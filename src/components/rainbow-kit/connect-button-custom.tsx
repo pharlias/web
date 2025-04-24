@@ -77,7 +77,7 @@ export default function ConnectButtonCustom() {
                     type="button"
                     style={{
                       minHeight: 20,
-                      height: 30
+                      height: 35
                     }}
                   >
                     Connect Wallet
@@ -94,7 +94,7 @@ export default function ConnectButtonCustom() {
                     type="button"
                     style={{
                       minHeight: 20,
-                      height: 30
+                      height: 35
                     }}
                   >
                     Wrong network
@@ -112,12 +112,15 @@ export default function ConnectButtonCustom() {
                       type="button"
                       style={{
                         minHeight: 20,
-                        height: 30,
+                        height: 35,
+                        paddingLeft: "3px",
+                        paddingRight: "0",
+                        widows: 30,
                         border: "1px solid #E6E8EC",
                       }}
                     >
                       {chain.hasIcon && (
-                        <Flex vertical='center' horizontal='center'>
+                        <Flex vertical='center' horizontal='center' paddingX='0'>
                           <ChainIcon
                             iconUrl={chain.iconUrl}
                             name={chain.name}
@@ -145,7 +148,7 @@ export default function ConnectButtonCustom() {
                       justifyContent='center'
                       style={{
                         minHeight: 20,
-                        height: 30,
+                        height: 35,
                         border: "1px solid #E6E8EC",
                       }}
                     >
