@@ -34,7 +34,7 @@ export default function Home() {
 
 
   return (
-    <Column fillWidth paddingTop="80" paddingBottom="8" fillHeight paddingX="s" horizontal="center" flex={1} className={styles.container}>
+    <Column fillWidth paddingTop="80" paddingBottom="8" paddingX="s" horizontal="center" flex={1} className={styles.container}>
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
       </ScrollToTop>
@@ -61,7 +61,6 @@ export default function Home() {
         horizontal="center"
         border="neutral-alpha-weak"
         fillWidth
-        fillHeight
         marginTop="8"
       >
         <Column
