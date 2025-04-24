@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Badge, Column, Icon, Input, Text, Row, Button, Spinner } from "@/ui/components";
 import styles from "../page.module.scss";
 import { PNS } from "@/types/pns.type";
+import ConnectButtonWrapper from "@/components/rainbow-kit/connect-button-wrapper";
+import { useAccount } from "wagmi";
 
 interface DomainSearchSectionProps {
   onDomainSelect: (domain: PNS) => void;
@@ -18,6 +20,8 @@ export const DomainSearchSection = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [currentAvailability, setCurrentAvailability] = useState<boolean | null>(null);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
+
+  const { isConnected } = useAccount();
 
   useEffect(() => {
     if (domainName.trim().length > 0) {
@@ -105,44 +109,46 @@ export const DomainSearchSection = ({
       />
       {domainName.trim() && (
         <Column gap="12" fillWidth style={{ maxWidth: "400px" }}>
-          <Badge
-            fillWidth
-            arrow={currentAvailability === true && !isSelectionComplete ? true : false}
-            style={{
-              width: "100%",
-              cursor: isSelectionComplete || currentAvailability !== true ? "default" : "pointer",
-              justifyContent: "space-between",
-              backgroundColor: currentAvailability === true
-                ? isSelectionComplete && selectedDomain === domainName
-                  ? "rgba(0, 255, 0, 0.3)"
-                  : "rgba(0, 255, 0, 0.1)"
-                : currentAvailability === false
-                  ? "rgba(255, 0, 0, 0.1)"
-                  : undefined,
-              opacity: isSelectionComplete && selectedDomain !== domainName ? 0.5 : 1
-            }}
-            onClick={isSelectionComplete || !currentAvailability ? undefined : handleSelectDomain}
-          >
-            <Row fillWidth horizontal="space-between" vertical="center">
-              <Text>
-                {domainName}.pharos
-              </Text>
-              <Text>
-                {isLoading ? (
-                  "Checking..."
-                ) : isSelectionComplete && selectedDomain === domainName ? (
-                  "Selected"
-                ) : currentAvailability !== null ? (
-                  currentAvailability
-                    ? `Available | ~${calculatePrice(domainName)} ETH`
-                    : "Already Taken"
-                ) : (
-                  `Check Availability | ~${calculatePrice(domainName)} ETH`
-                )}
-              </Text>
-            </Row>
-          </Badge>
-          {suggestions.length > 0 && !isSelectionComplete && (
+          <ConnectButtonWrapper>
+            <Badge
+              fillWidth
+              arrow={currentAvailability === true && !isSelectionComplete ? true : false}
+              style={{
+                width: "100%",
+                cursor: isSelectionComplete || currentAvailability !== true ? "default" : "pointer",
+                justifyContent: "space-between",
+                backgroundColor: currentAvailability === true
+                  ? isSelectionComplete && selectedDomain === domainName
+                    ? "rgba(0, 255, 0, 0.3)"
+                    : "rgba(0, 255, 0, 0.1)"
+                  : currentAvailability === false
+                    ? "rgba(255, 0, 0, 0.1)"
+                    : undefined,
+                opacity: isSelectionComplete && selectedDomain !== domainName ? 0.5 : 1
+              }}
+              onClick={isSelectionComplete || !currentAvailability ? undefined : handleSelectDomain}
+            >
+              <Row fillWidth horizontal="space-between" vertical="center">
+                <Text>
+                  {domainName}.pharos
+                </Text>
+                <Text>
+                  {isLoading ? (
+                    "Checking..."
+                  ) : isSelectionComplete && selectedDomain === domainName ? (
+                    "Selected"
+                  ) : currentAvailability !== null ? (
+                    currentAvailability
+                      ? `Available | ~${calculatePrice(domainName)} ETH`
+                      : "Already Taken"
+                  ) : (
+                    `Check Availability | ~${calculatePrice(domainName)} ETH`
+                  )}
+                </Text>
+              </Row>
+            </Badge>
+          </ConnectButtonWrapper>
+          {isConnected && suggestions.length > 0 && !isSelectionComplete && (
             <Column gap="8" fillWidth>
               <Text style={{ opacity: 0.7 }}>
                 Similar Domains:

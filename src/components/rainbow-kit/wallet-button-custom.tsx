@@ -36,7 +36,7 @@ const ChainIcon = ({ iconUrl, name, background, size = 20 }: {
   </Flex>
 );
 
-export default function ConnectButtonCustom() {
+export default function WalletButtonCustom() {
   return (
     <ConnectButton.Custom>
       {({

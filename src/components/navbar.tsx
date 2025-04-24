@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import React, { useRef, useEffect, JSX } from 'react'
 import styles from './navbar.module.scss'
 import { linksDocs, linksGithub, linksLogo, linksTwitter, routes, routesMobile } from '@/constans/config'
-import ConnectButtonCustom from './rainbow-kit/connect-button-custom'
+import WalletButtonCustom from './rainbow-kit/wallet-button-custom'
 import classNames from 'classnames'
 
 export default function Navbar(): JSX.Element {
@@ -117,7 +117,7 @@ export default function Navbar(): JSX.Element {
             variant="tertiary"
           />
           <Row horizontal='center' vertical='center' gap="12">
-            <ConnectButtonCustom />
+            <WalletButtonCustom />
           </Row>
         </Row>
         <NavIcon
@@ -206,7 +206,7 @@ export default function Navbar(): JSX.Element {
             ))}
           </Row>
           <Row horizontal='center' gap="12" paddingTop="16">
-            <ConnectButtonCustom />
+            <WalletButtonCustom />
           </Row>
           <Row gap="16" horizontal="center" paddingTop="16">
             <IconButton

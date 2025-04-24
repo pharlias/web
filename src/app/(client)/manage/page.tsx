@@ -1,19 +1,22 @@
 "use client"
 import { useDomainRegistereds } from '@/hooks/query/graphql/useDomainRegistereds';
-import { Background, Column, Fade, Flex, Grid, IconButton, Text } from '@/ui/components';
+import { Column, Fade, Flex, Grid, IconButton, Text } from '@/ui/components';
 import { ScrollToTop } from '@/ui/components/ScrollToTop';
 import React from 'react';
 import CardNFT from './_components/CardNFT';
+import { PageFooter } from '@/components/layout/footer';
+import { PageBackground } from '@/components/layout/background';
+import styles from "./page.module.scss";
+import ConnectButtonWrapper from '@/components/rainbow-kit/connect-button-wrapper';
 
 export default function Page() {
   const { data } = useDomainRegistereds();
 
   return (
-    <Column fillWidth paddingTop="80" paddingX="s" horizontal="center" flex={1}>
+    <Column fillWidth paddingTop="80" paddingBottom="8" fillHeight paddingX="s" horizontal="center" flex={1} className={styles.container}>
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" />
       </ScrollToTop>
-
       <Fade
         zIndex={3}
         pattern={{
@@ -28,7 +31,6 @@ export default function Page() {
         fillWidth
         blur={0.25}
       />
-
       <Column
         overflow="hidden"
         as="main"
@@ -38,81 +40,42 @@ export default function Page() {
         horizontal="center"
         border="neutral-alpha-weak"
         fillWidth
-        style={{
-          minHeight: "80vh"
-        }}
+        fillHeight
+        marginTop="8"
       >
-        <Background
-          mask={{
-            x: 0,
-            y: 48,
-          }}
-          zIndex={-1}
-          position="absolute"
-          grid={{
-            display: true,
-            width: "0.25rem",
-            color: "neutral-alpha-medium",
-            height: "0.25rem",
-          }}
-        />
+        <Column
+          fillWidth
+          horizontal="center"
+          gap="32"
+          radius="xl"
+          padding="32"
+          position="relative"
+          vertical="start"
+          className={styles.contentContainer}
+        >
+          <PageBackground />
 
-        <Background
-          mask={{
-            x: 80,
-            y: 0,
-            radius: 100,
-          }}
-          zIndex={-1}
-          position="absolute"
-          gradient={{
-            display: true,
-            tilt: -35,
-            height: 50,
-            width: 75,
-            x: 100,
-            y: 40,
-            colorStart: "accent-solid-medium",
-            colorEnd: "static-transparent",
-          }}
-        />
+          <Text variant="heading-default-l" marginY="24" paddingX="24">
+            Manage your NFT Here
+          </Text>
 
-        <Background
-          mask={{
-            x: 100,
-            y: 0,
-            radius: 100,
-          }}
-          zIndex={-1}
-          position="absolute"
-          gradient={{
-            display: true,
-            opacity: 100,
-            tilt: -35,
-            height: 20,
-            width: 120,
-            x: 120,
-            y: 35,
-            colorStart: "brand-solid-strong",
-            colorEnd: "static-transparent",
-          }}
-        />
-
-        <Text variant="heading-default-l" marginY="24" paddingX="24">
-          Manage your NFT Here
-        </Text>
-
-        <Flex horizontal='center'>
-          <Grid gap="s" fillWidth fillHeight columns={3} tabletColumns={2} mobileColumns={1} align='center'>
-            {data && Array.isArray(data) ? (
-              data.map((nft) => (
-                <CardNFT nft={nft} key={nft.id} />
-              ))
-            ) : (
-              <Text variant="body-default-m" onBackground="neutral-weak">Not Found</Text>
-            )}
-          </Grid>
-        </Flex>
+          <Flex horizontal='center'>
+            <ConnectButtonWrapper>
+              <Grid gap="s" fillWidth fillHeight columns={3} tabletColumns={2} mobileColumns={1} align='center'>
+                {data && Array.isArray(data) ? (
+                  data.map((nft) => (
+                    <CardNFT nft={nft} key={nft.id} />
+                  ))
+                ) : (
+                  <Flex fillWidth horizontal='center'>
+                    <Text variant="body-default-m" onBackground="neutral-weak">Not Found</Text>
+                  </Flex>
+                )}
+              </Grid>
+            </ConnectButtonWrapper>
+          </Flex>
+        </Column>
+        <PageFooter />
       </Column>
     </Column >
   );
