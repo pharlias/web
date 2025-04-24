@@ -1,3 +1,5 @@
+import { appName } from "@/constans/config";
+
 const baseURL = "demo.once-ui.com";
 
 // default customization applied to the HTML in the main layout.tsx
@@ -54,9 +56,9 @@ const effects = {
 
 // default metadata
 const meta = {
-  title: "App",
+  title: appName,
   description:
-    "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
+    "An web3 app",
 };
 
 // default open graph data
@@ -70,9 +72,9 @@ const og = {
 const schema = {
   logo: "",
   type: "Organization",
-  name: "App",
+  name: appName,
   description: meta.description,
-  email: "lorant@once-ui.com",
+  email: "jossfajar21@gmail.com",
 };
 
 // social links

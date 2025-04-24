@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Badge, Column, Icon, Input, Text, Row } from "@/ui/components";
+import { Badge, Column, Icon, Input, Text, Row, Button } from "@/ui/components";
 import styles from "../page.module.scss";
 import { PNS } from "@/types/pns.type";
 import { useDomainAvailability } from "@/hooks/domain/useDomainAvailability";
@@ -23,12 +23,18 @@ export const DomainSearchSection = ({ onDomainSelect }: DomainSearchSectionProps
         `${baseName}nft`,
         `${baseName}web3`,
       ].filter(name => name !== baseName);
-      
+
       setSuggestions(newSuggestions);
     } else {
       setSuggestions([]);
     }
   }, [domainName]);
+
+  const calculatePrice = (name: string) => {
+    const basePrice = 0.0001;
+    const lengthFactor = Math.max(1, 10 - name.length) * 0.001;
+    return (basePrice + lengthFactor).toFixed(3);
+  };
 
   const handleSelectDomain = (name: string = domainName) => {
     onDomainSelect({
@@ -39,14 +45,8 @@ export const DomainSearchSection = ({ onDomainSelect }: DomainSearchSectionProps
     });
   };
 
-  const calculatePrice = (name: string) => {
-    const basePrice = 0.005;
-    const lengthFactor = Math.max(1, 10 - name.length) * 0.001;
-    return (basePrice + lengthFactor).toFixed(3);
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const sanitizedInput = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+    const sanitizedInput = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
     setDomainName(sanitizedInput);
   };
 
@@ -68,25 +68,28 @@ export const DomainSearchSection = ({ onDomainSelect }: DomainSearchSectionProps
           borderTopRightRadius: 0,
         }}
       />
-      
+
       {showResults && domainName.trim() && (
         <Column gap="12" fillWidth style={{ maxWidth: "400px" }}>
           <Badge
             fillWidth
-            style={{ 
-              width: "100%", 
-              cursor: "pointer", 
+            arrow
+            style={{
+              width: "100%",
+              cursor: "pointer",
               justifyContent: "space-between",
-              backgroundColor: availability ? "rgba(0, 255, 0, 0.1)" : "rgba(255, 0, 0, 0.1)"
+              backgroundColor: availability ? "rgba(0, 255, 0, 0.1)" : "rgba(255, 0, 0, 0.1)",
             }}
             onClick={() => handleSelectDomain()}
           >
-            <Text>
-              {domainName}.pharos
-            </Text>
-            <Text>
-              {availability ? "Available" : "Unavailable"} - {calculatePrice(domainName)} ETH
-            </Text>
+            <Row fillWidth horizontal="space-between" vertical="center">
+              <Text>
+                {domainName}.pharos
+              </Text>
+              <Text>
+                {availability ? "Available" : "Unavailable"} | ~{calculatePrice(domainName)} ETH
+              </Text>
+            </Row>
           </Badge>
 
           {suggestions.length > 0 && (
@@ -96,9 +99,11 @@ export const DomainSearchSection = ({ onDomainSelect }: DomainSearchSectionProps
               </Text>
               <Row gap="8" style={{ flexWrap: "wrap" }}>
                 {suggestions.map((suggestion, index) => (
-                  <Badge
+                  <Button
                     key={index}
-                    style={{ 
+                    variant="secondary"
+                    id={`suggestion-${index}`}
+                    style={{
                       cursor: "pointer",
                       opacity: 0.8,
                       transition: "all 0.2s ease"
@@ -106,15 +111,14 @@ export const DomainSearchSection = ({ onDomainSelect }: DomainSearchSectionProps
                     onClick={() => handleSelectDomain(suggestion)}
                   >
                     <Text>{suggestion}.pharos</Text>
-                  </Badge>
+                  </Button>
                 ))}
               </Row>
             </Column>
           )}
         </Column>
       )}
-      
-      {/* Show message when input is empty */}
+
       {!domainName.trim() && (
         <Text style={{ opacity: 0.7, textAlign: "center" }}>
           Enter a name to check availability and register your .pharos domain
