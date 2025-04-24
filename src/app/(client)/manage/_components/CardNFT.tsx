@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Card, Column, Line, Row, Text } from '@/ui/components';
+import { Badge, Card, Column, Flex, Line, Row, Text } from '@/ui/components';
 import { useNFTMetadata } from '@/hooks/query/useNFTMetadata';
 import { NFTType } from '@/types/graphql/domain-registereds.type';
+import { ContractRentRegistrar } from '@/constans/contracts';
+import { useAccount, useWalletClient } from 'wagmi';
 
 export default function CardNFT({ nft }: { nft: NFTType }) {
   const { data: metadataUrl } = useNFTMetadata(nft.tokenId);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [isAddingToWallet, setIsAddingToWallet] = useState(false);
+  const [isInWallet, setIsInWallet] = useState(false);
+
+  const { address } = useAccount();
+  const { data: walletClient } = useWalletClient();
 
   const ipfsToGateway = (ipfsUri: string) => {
     const cid = ipfsUri.replace("ipfs://", "");
@@ -28,6 +35,14 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
     fetchImage();
   }, [metadataUrl]);
 
+  useEffect(() => {
+    if (address && nft.owner.toLowerCase() === address.toLowerCase()) {
+      setIsInWallet(true);
+    } else {
+      setIsInWallet(false);
+    }
+  }, [address, nft.owner]);
+
   const formatDate = (timestamp: string) => {
     const date = new Date(parseInt(timestamp) * 1000);
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -43,6 +58,65 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
   };
 
   const shortenAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+
+  const addToWallet = async () => {
+    try {
+      setIsAddingToWallet(true);
+
+      if (!walletClient) {
+        alert("Please connect your wallet to use this feature");
+        setIsAddingToWallet(false);
+        return;
+      }
+
+      const tokenAddress = ContractRentRegistrar;
+      const tokenId = nft.tokenId;
+      const tokenSymbol = "NFT";
+
+      try {
+        await walletClient.transport.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC721',
+            options: {
+              address: tokenAddress,
+              tokenId: tokenId,
+              symbol: tokenSymbol,
+              image: imageUrl || "",
+            },
+          },
+        });
+
+        setIsInWallet(true);
+
+      } catch (err) {
+        console.warn("ERC721 method not supported, trying ERC20 fallback");
+        await walletClient.transport.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: tokenAddress,
+              symbol: tokenSymbol,
+              decimals: 0,
+              image: imageUrl || "",
+            },
+          },
+        });
+
+        setIsInWallet(true);
+      }
+
+      console.log("NFT added to wallet successfully");
+
+    } catch (error) {
+      console.error("Error adding NFT to wallet:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      alert("Failed to add NFT to wallet: " + errorMessage);
+    } finally {
+      setIsAddingToWallet(false);
+    }
+  };
 
   const timeStatus = getTimeRemaining();
   const isExpired = timeStatus === 'Expired';
@@ -103,13 +177,56 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
         <Row fillWidth vertical="center" horizontal="space-between">
           <Column gap="4">
             <Text variant="label-default-s" onBackground="neutral-medium">Token ID</Text>
-            <Text variant="body-default-s" style={{ fontWeight: '500' }}>{nft.tokenId}</Text>
+            <Text variant="body-default-s" style={{ fontWeight: '500' }}>{shortenAddress(nft.tokenId)}</Text>
           </Column>
           <Column gap="4" horizontal="end">
             <Text variant="label-default-s" onBackground="neutral-medium">Owner</Text>
             <Text variant="body-default-s" style={{ fontWeight: '500' }}>{shortenAddress(nft.owner)}</Text>
           </Column>
         </Row>
+
+        <Flex fillWidth horizontal="center" vertical="center" gap="8">
+          <div
+            onClick={() => {
+              if (!isAddingToWallet && !isInWallet) {
+                addToWallet();
+              }
+            }}
+            style={{
+              cursor: isAddingToWallet || isInWallet ? 'not-allowed' : 'pointer',
+              padding: '10px 20px',
+              backgroundColor: isInWallet ? '#1260cc' : '#1260cc',
+              color: 'white',
+              borderRadius: '9999px',
+              textAlign: 'center',
+              fontWeight: '600',
+              boxShadow: isAddingToWallet || isInWallet
+                ? 'none'
+                : '0 4px 14px rgba(0, 0, 0, 0.1)',
+              transition: 'all 0.3s ease',
+              opacity: isAddingToWallet || isInWallet ? 0.6 : 1,
+              pointerEvents: isAddingToWallet || isInWallet ? 'none' : 'auto',
+              userSelect: 'none',
+            }}
+            onMouseOver={(e) => {
+              if (!isAddingToWallet && !isInWallet) {
+                e.currentTarget.style.backgroundColor = '#e04848'; // slightly darker red on hover
+              }
+            }}
+            onMouseOut={(e) => {
+              if (!isAddingToWallet && !isInWallet) {
+                e.currentTarget.style.backgroundColor = '#FF5757'; // revert to original
+              }
+            }}
+          >
+            {isInWallet
+              ? 'Added to Wallet'
+              : isAddingToWallet
+                ? 'Adding...'
+                : 'Add to Wallet'}
+          </div>
+
+        </Flex>
       </Column>
     </Card>
   );

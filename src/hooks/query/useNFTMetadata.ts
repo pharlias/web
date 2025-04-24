@@ -1,13 +1,13 @@
-import { ContractRentRegistrar } from "@/constans/contracts";
-import { DomainNameNFTABI } from "@/lib/abis/DomainNameNFTABI";
+import { ContractNFTRegistrar } from "@/constans/contracts";
+import { NFTRegistrarABI } from "@/lib/abis/NFTRegistrarABI";
 import { useReadContract } from "wagmi";
 
 export const useNFTMetadata = (tokenId: string) => {
   const { data, isLoading } = useReadContract({
-    address: ContractRentRegistrar,
-    abi: DomainNameNFTABI,
+    address: ContractNFTRegistrar,
+    abi: NFTRegistrarABI,
     functionName: "tokenURI",
-    args: [tokenId],
+    args: [BigInt(tokenId)],
   })
 
   return { data, isLoading };

@@ -16,8 +16,8 @@ export default function Home() {
   
   const checkDomainAvailability = (domainName: string) => {
     if (!domainName) return true;
-    const fullDomainName = `${domainName}.pharos`;
-    return !data?.some(domain => domain.name.toLowerCase() === fullDomainName.toLowerCase());
+    // const fullDomainName = `${domainName}.pharos`;
+    return !data?.some(domain => domain.name.toLowerCase() === domainName.toLowerCase());
   };
 
   const handleDomainSelect = (domain: PNS) => {
