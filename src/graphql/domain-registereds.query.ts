@@ -11,9 +11,9 @@ export const queryDomainRegistereds = (address: string) => {
         items {
           blockNumber
           blockTimestamp
-          domain
+          expires
           id
-          expiresAt
+          name
           owner
           tokenId
           transactionHash

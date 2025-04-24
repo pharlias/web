@@ -35,7 +35,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
 
   const getTimeRemaining = () => {
     const now = Date.now();
-    const expiry = parseInt(nft.expiresAt) * 1000;
+    const expiry = parseInt(nft.expires) * 1000;
     const timeLeft = expiry - now;
     if (timeLeft <= 0) return 'Expired';
     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
@@ -52,7 +52,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
       <div style={{ position: 'relative' }}>
         <img
           src={imageUrl || "/api/placeholder/300/300"}
-          alt={nft.domain}
+          alt={nft.name}
           style={{
             borderRadius: "30px",
             width: 'auto',
@@ -87,7 +87,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
             whiteSpace: 'nowrap'
           }}
         >
-          {nft.domain}
+          {nft.name}
         </Text>
 
         <Text size='s' variant="label-default-s" onBackground="neutral-medium" style={{ color: '#5f5f5f' }}>
@@ -95,7 +95,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
         </Text>
 
         <Text size='s' variant="label-default-s" onBackground="neutral-medium" style={{ color: '#5f5f5f' }}>
-          Expired at: {formatDate(nft.expiresAt)}
+          Expired at: {formatDate(nft.expires)}
         </Text>
 
         <Line />

@@ -3,9 +3,9 @@ export type DomainRegisteredsType = {
     items: Array<{
       blockNumber: string;
       blockTimestamp: string;
-      domain: string;
+      expires: string;
+      name: string;
       id: string;
-      expiresAt: string;
       owner: string;
       tokenId: string;
       transactionHash: string;
@@ -16,9 +16,9 @@ export type DomainRegisteredsType = {
 export type NFTType = {
   blockNumber: string;
   blockTimestamp: string;
-  domain: string;
+  expires: string;
+  name: string;
   id: string;
-  expiresAt: string;
   owner: string;
   tokenId: string;
   transactionHash: string;
