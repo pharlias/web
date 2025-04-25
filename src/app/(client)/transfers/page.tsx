@@ -7,16 +7,6 @@ import { PageFooter } from '@/components/layout/footer';
 import { PageBackground } from '@/components/layout/background';
 import styles from "./page.module.scss";
 
-// list data of useDomainRegisteredsUser
-// blockNumber: string;
-// blockTimestamp: string;
-// expires: string;
-// name: string;
-// id: string;
-// owner: string;
-// tokenId: string;
-// transactionHash: string;
-
 export default function Page() {
   const { data } = useDomainRegisteredsUser();
   const [selectedDomain, setSelectedDomain] = useState("");
@@ -48,10 +38,12 @@ export default function Page() {
     // Add actual transfer logic here
   };
 
+  const shortenAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+
   const domainOptions = data ? data.map(domain => ({
     label: `${domain.name}.pharos`,
-    value: domain.id,
-    description: `Expires: ${new Date(parseInt(domain.expires) * 1000).toLocaleDateString()}`
+    value: `${domain.name}.pharos`, // Changed from domain.id to domain name
+    description: `Token id: ${domain.tokenId.length > 4 ? `${domain.tokenId.slice(0, 4)}...${domain.tokenId.slice(-4)}` : domain.tokenId} - Owner: ${shortenAddress(domain.owner)}`,
   })) : [];
 
   return (
