@@ -19,6 +19,10 @@ const configApp = {
       label: "Home"
     },
     {
+      href: "/transfers",
+      label: "Transfer"
+    },
+    {
       href: "/manage",
       label: "Manage"
     }
@@ -29,6 +33,12 @@ const configApp = {
       href: '/home',
       icon: 'home',
       label: 'Home'
+    },
+    {
+      description: 'Transfer your assets',
+      href: '/transfers',
+      icon: 'transfer',
+      label: 'Transfer',
     },
     {
       description: 'Manage your assets',

@@ -36,6 +36,7 @@ import {
   HiOutlineShieldCheck,
   HiOutlineSparkles,
   HiOutlineSun,
+  HiPaperAirplane,
   HiWallet,
 } from "react-icons/hi2";
 
@@ -87,7 +88,8 @@ export const iconLibrary: Record<string, IconType> = {
   heart: HiHeart,
   chat: HiChatBubbleBottomCenterText,
   clock: HiClock,
-  money: HiBanknotes
+  money: HiBanknotes,
+  transfer: HiPaperAirplane,
 };
 
 export type IconLibrary = typeof iconLibrary;

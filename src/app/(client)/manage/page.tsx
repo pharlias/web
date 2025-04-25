@@ -11,7 +11,7 @@ import ConnectButtonWrapper from '@/components/rainbow-kit/connect-button-wrappe
 
 export default function Page() {
   const { data } = useDomainRegisteredsUser();
-
+  
   return (
     <Column fillWidth paddingTop="80" paddingBottom="8" paddingX="s" horizontal="center" flex={1} className={styles.container}>
       <ScrollToTop>
@@ -54,29 +54,31 @@ export default function Page() {
           className={styles.contentContainer}
         >
           <PageBackground />
-
           <Text variant="heading-default-l" marginY="24" paddingX="24">
-            Manage your NFT Here
+            Manage your Pharos Name Service Here
           </Text>
-
-          <Flex horizontal='center'>
+          <Flex horizontal='center' fillWidth>
             <ConnectButtonWrapper>
-              <Grid gap="s" fillWidth fillHeight columns={3} tabletColumns={2} mobileColumns={1} align='center'>
-                {data && Array.isArray(data) ? (
-                  data.map((nft) => (
+              {data && Array.isArray(data) && data.length > 0 ? (
+                <Grid gap="s" fillWidth fillHeight columns={3} tabletColumns={2} mobileColumns={1} align='center'>
+                  {data.map((nft) => (
                     <CardNFT nft={nft} key={nft.id} />
-                  ))
-                ) : (
-                  <Flex fillWidth horizontal='center'>
-                    <Text variant="body-default-m" onBackground="neutral-weak">Not Found</Text>
-                  </Flex>
-                )}
-              </Grid>
+                  ))}
+                </Grid>
+              ) : (
+                <Flex 
+                  horizontal='center' 
+                  vertical='center' 
+                  fillWidth
+                >
+                  <Text variant="body-default-m" onBackground="neutral-weak">No domain found</Text>
+                </Flex>
+              )}
             </ConnectButtonWrapper>
           </Flex>
         </Column>
         <PageFooter />
       </Column>
-    </Column >
+    </Column>
   );
 }

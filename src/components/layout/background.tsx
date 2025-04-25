@@ -28,6 +28,7 @@ export const PageBackground = () => {
           y: 0,
           radius: 100,
         }}
+        zIndex={-1}
         position="absolute"
         gradient={{
           display: true,

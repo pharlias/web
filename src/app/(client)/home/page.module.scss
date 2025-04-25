@@ -49,6 +49,7 @@ $text-secondary: rgba(255, 255, 255, 0.6);
 .container {
   min-height: 100vh;
   animation: fadeIn 0.6s ease-in-out;
+  height: 100%;
 }
 
 .mainCard {
@@ -64,7 +65,7 @@ $text-secondary: rgba(255, 255, 255, 0.6);
 }
 
 .contentContainer {
-  min-height: 60vh;
+  min-height: 70vh;
   position: relative;
 }
 
