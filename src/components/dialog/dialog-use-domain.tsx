@@ -8,47 +8,53 @@ import {
   Row,
   Text
 } from '@/ui/components';
-import { pharosExplorer } from '@/constans/config';
 
-export default function DialogGeneratedPNS({
+export default function DialogUseDomain({
   isOpen,
   handleClose,
   domainName,
-  txHash,
-  imageURI
+  imageURI,
+  onConfirm
 }: {
   isOpen: boolean;
   handleClose: () => void;
   domainName: string;
-  txHash: HexAddress;
   imageURI: string;
+  onConfirm?: () => void;
 }) {
+  const handleConfirm = () => {
+    if (onConfirm) {
+      onConfirm();
+    }
+    // Redirect to manage page after confirming
+    window.location.href = '/manage';
+  };
+
   return (
     <Dialog
       isOpen={isOpen}
       onClose={handleClose}
-      title="Registration Successful"
-      description={`${domainName || 'domain'}.pharos has been registered`}
+      title="Use Domain"
+      description={`Do you want to use ${domainName || 'domain'}.pharos as your active domain?`}
       footer={
         <Row horizontal="space-between" gap="12" fillWidth>
           <Button
             variant="danger"
-            label="Close"
+            label="Cancel"
             onClick={handleClose}
           />
           <Button
             variant="primary"
-            label={"Manage Domain"}
+            label="Use This Domain"
             style={{
               cursor: 'pointer',
-              position: 'relative', 
-              zIndex: 11 
+              position: 'relative',
+              zIndex: 11
             }}
-            onClick={() => window.location.href = '/manage'}
+            onClick={handleConfirm}
           />
         </Row>
       }
-      // zIndex={10}
       base
     >
       <Column gap="24" fillWidth>
@@ -65,30 +71,14 @@ export default function DialogGeneratedPNS({
             />
           </Row>
         </Flex>
-
         <Column gap="16" padding="24" background="neutral-weak" radius="l">
           <Row horizontal="space-between" vertical="center" fillWidth>
-            <Text variant="body-default-m" onBackground="neutral-medium">Expires</Text>
-            <Text variant="body-strong-m">
-              {new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-            </Text>
+            <Text variant="body-default-m" onBackground="neutral-medium">Domain Name</Text>
+            <Text variant="body-default-m">{domainName}.pharos</Text>
           </Row>
-
           <Row horizontal="space-between" vertical="center" fillWidth>
-            <Text variant="body-default-m" onBackground="neutral-medium">Transaction</Text>
-            <Row gap="4" vertical="center">
-              <Button
-                onClick={() => window.open(`${pharosExplorer}/tx/${txHash}`, '_blank')}
-                variant='secondary'
-              >
-                View on Explorer
-              </Button>
-            </Row>
-          </Row>
-
-          <Row horizontal="space-between" vertical="center" fillWidth>
-            <Text variant="body-default-m" onBackground="neutral-medium">Status</Text>
-            <Badge color="success">Confirmed</Badge>
+            <Text variant="body-default-m" onBackground="neutral-medium">Action</Text>
+            <Badge color="info">Set as Active Domain</Badge>
           </Row>
         </Column>
       </Column>

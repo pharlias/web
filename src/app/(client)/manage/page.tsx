@@ -55,7 +55,7 @@ export default function Page() {
         >
           <PageBackground />
           <Text variant="heading-default-l" marginY="24" paddingX="24">
-            Manage your Pharos Name Service Here
+            Manage your Pharos Name Service here
           </Text>
           <Flex horizontal='center' fillWidth>
             <ConnectButtonWrapper>

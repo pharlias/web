@@ -4,6 +4,7 @@ import React from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Image from 'next/image'
 import { Button, Flex, Row, Text } from '@/ui/components';
+import { useDomainUsed } from '@/hooks/query/useDomainUsed';
 
 const ChainIcon = ({ iconUrl, name, background, size = 20 }: {
   iconUrl?: string;
@@ -37,6 +38,8 @@ const ChainIcon = ({ iconUrl, name, background, size = 20 }: {
 );
 
 export default function WalletButtonCustom() {
+  const { name } = useDomainUsed();
+
   return (
     <ConnectButton.Custom>
       {({
@@ -159,7 +162,7 @@ export default function WalletButtonCustom() {
                           fontWeight: 500
                         }}
                       >
-                        {account.displayName}
+                        {name ? `${name}.pharos` : account.displayName}
                         {account.displayBalance
                           ? ` (${account.displayBalance})`
                           : ''}

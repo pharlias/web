@@ -9,7 +9,7 @@ import { baseSepolia } from 'viem/chains';
 export const pharos = {
   id: pharosChainId,
   name: 'Pharos Devnet',
-  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  nativeCurrency: { name: 'Pharos Token', symbol: 'PTT', decimals: 18 },
   iconUrl: pharosLogo,
   iconBackground: '#fff',
   rpcUrls: {

@@ -41,7 +41,7 @@ const configApp = {
       label: 'Transfer',
     },
     {
-      description: 'Manage your assets',
+      description: 'Manage your domains',
       href: '/manage',
       icon: 'dashboard',
       label: 'Manage',

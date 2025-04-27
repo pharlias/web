@@ -1,58 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Badge, Card, Column, Flex, Line, Row, Text } from '@/ui/components';
 import { useNFTMetadata } from '@/hooks/query/useNFTMetadata';
 import { NFTType } from '@/types/graphql/domain-registereds.type';
-import { ContractRentRegistrar } from '@/constans/contracts';
-import { useWalletClient } from 'wagmi';
 import { formatDate, getTimeRemaining, shortenAddress } from '@/lib/helper';
+import DialogUseDomain from '@/components/dialog/dialog-use-domain';
 
 export default function CardNFT({ nft }: { nft: NFTType }) {
   const { name, image } = useNFTMetadata(nft.tokenId);
-  const [isAddingToWallet, setIsAddingToWallet] = useState(false);
+  const [isUsingNFT, setIsUsingNFT] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data: walletClient } = useWalletClient();
-
-  const addToWallet = async () => {
-    try {
-      setIsAddingToWallet(true);
-
-      if (!walletClient) {
-        alert("Please connect your wallet to use this feature");
-        setIsAddingToWallet(false);
-        return;
+  useEffect(() => {
+    const usedDomain = localStorage.getItem('usedDomain');
+    if (usedDomain) {
+      const parsedDomain = JSON.parse(usedDomain);
+      if (parsedDomain.tokenId === nft.tokenId) {
+        setIsUsingNFT(true);
       }
-
-      const tokenAddress = ContractRentRegistrar;
-      const tokenId = nft.tokenId;
-      const tokenSymbol = "DOMAIN";
-
-      try {
-        await walletClient.transport.request({
-          method: 'wallet_watchAsset',
-          params: {
-            type: 'ERC721',
-            options: {
-              address: tokenAddress,
-              tokenId: tokenId,
-              symbol: tokenSymbol,
-              image: image || "",
-            },
-          },
-        });
-
-      } catch (err) {
-        console.warn("ERC721 method not supported");
-      }
-
-      console.log("NFT added to wallet successfully");
-
-    } catch (error) {
-      console.error("Error adding NFT to wallet:", error);
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      alert("Failed to add NFT to wallet: " + errorMessage);
-    } finally {
-      setIsAddingToWallet(false);
     }
+  }, [nft.tokenId]);
+
+  const handleUseDomain = async () => {
+    if (isUsingNFT) {
+      localStorage.removeItem('usedDomain');
+      setIsUsingNFT(false);
+    } else {
+      setIsDialogOpen(true);
+    }
+  };
+
+  const confirmUseDomain = () => {
+    localStorage.setItem('usedDomain', JSON.stringify(nft));
+    setIsUsingNFT(true);
+    setIsDialogOpen(false);
   };
 
   const timeStatus = getTimeRemaining(nft.expires);
@@ -124,34 +104,31 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
 
         <Flex fillWidth horizontal="center" vertical="center" gap="8">
           <div
-            onClick={() => {
-              if (!isAddingToWallet) {
-                addToWallet();
-              }
-            }}
+            onClick={handleUseDomain}
             style={{
-              cursor: isAddingToWallet ? 'not-allowed' : 'pointer',
+              cursor: 'pointer',
               padding: '10px 20px',
-              backgroundColor: isAddingToWallet ? '#1260cc' : '#1260cc',
+              backgroundColor: isUsingNFT ? '#ef4444' : '#22c55e',
               color: 'white',
               borderRadius: '9999px',
               textAlign: 'center',
               fontWeight: '600',
-              boxShadow: isAddingToWallet
-                ? 'none'
-                : '0 4px 14px rgba(0, 0, 0, 0.1)',
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)',
               transition: 'all 0.3s ease',
-              opacity: isAddingToWallet ? 0.6 : 1,
-              pointerEvents: isAddingToWallet ? 'none' : 'auto',
               userSelect: 'none',
+              width: '100%',
             }}
           >
-            {
-              isAddingToWallet
-                ? 'Adding...'
-                : 'Add to Wallet'}
+            {isUsingNFT ? 'Unused PNS' : 'Use PNS'}
           </div>
 
+          <DialogUseDomain
+            isOpen={isDialogOpen}
+            domainName={name || 'Unknown Domain'}
+            handleClose={() => setIsDialogOpen(false)}
+            imageURI={image || "/api/placeholder/300/300"}
+            onConfirm={confirmUseDomain}
+          />
         </Flex>
       </Column>
     </Card>
