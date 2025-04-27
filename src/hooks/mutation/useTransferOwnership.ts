@@ -115,8 +115,6 @@ export const useTransferOwnership = () => {
           hash: txHash
         });
 
-        console.log("Transaction approve result:", result);
-
         setSteps((prev) =>
           prev.map((item) => {
             if (item.step === 2) {

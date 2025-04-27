@@ -2,5 +2,5 @@
 // export const ContractNFTRegistrar = "0x7c4DC15773Be3d3D9bf94e44c3B330B963230999";
 
 // Base sepolia contract for testing
-export const ContractRentRegistrar = "0x90B294F4CC2F0cDEE4E1d5074FC224FC36AE0779"
-export const ContractNFTRegistrar = "0x90A3D723d7462e4b63ec2be6f2dDBc0075f8803e"
+export const ContractRentRegistrar = "0xd157A17Ad9F8280834fc0A3bcD9D61507BC265f0"
+export const ContractNFTRegistrar = "0x73C08Bf5767a21FEEEDD86330F9687E7151B16d4"

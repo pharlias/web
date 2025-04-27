@@ -16,11 +16,11 @@ export default function Home() {
   
   const checkDomainAvailability = (domainName: string) => {
     if (!domainName) return true;
-    // const fullDomainName = `${domainName}.pharos`;
     return !data?.some(domain => domain.name.toLowerCase() === domainName.toLowerCase());
   };
 
   const handleDomainSelect = (domain: PNS) => {
+    console.log("Selected domain:", domain); 
     const isAvailable = checkDomainAvailability(domain.name);
     setSelectedDomain({
       ...domain,

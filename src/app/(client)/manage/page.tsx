@@ -7,10 +7,10 @@ import { PageFooter } from '@/components/layout/footer';
 import { PageBackground } from '@/components/layout/background';
 import styles from "./page.module.scss";
 import ConnectButtonWrapper from '@/components/rainbow-kit/connect-button-wrapper';
-import { useDomainUpdatedsUser } from '@/hooks/query/graphql/useDomainUpdatedsUser';
+import { useDomainUpdateds } from '@/hooks/query/graphql/useDomainUpdateds';
 
 export default function Page() {
-  const { data } = useDomainUpdatedsUser();
+  const { data } = useDomainUpdateds();
   
   return (
     <Column fillWidth paddingTop="80" paddingBottom="8" paddingX="s" horizontal="center" flex={1} className={styles.container}>

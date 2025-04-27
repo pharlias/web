@@ -11,7 +11,7 @@ import ConnectButtonWrapper from '@/components/rainbow-kit/connect-button-wrappe
 import { shortenAddress } from '@/lib/helper';
 import { useNFTMetadata } from '@/hooks/query/useNFTMetadata';
 import { NFTType } from '@/types/graphql/domain-registereds.type';
-import { useDomainUpdatedsUser } from '@/hooks/query/graphql/useDomainUpdatedsUser';
+import { useDomainUpdateds } from '@/hooks/query/graphql/useDomainUpdateds';
 
 const DomainOptionItem = ({ domain, onMetadataLoaded }: { domain: NFTType; onMetadataLoaded: (tokenId: string, name: string) => void }) => {
   const { name, isLoading } = useNFTMetadata(domain.tokenId || "");
@@ -26,7 +26,7 @@ const DomainOptionItem = ({ domain, onMetadataLoaded }: { domain: NFTType; onMet
 }
 
 export default function Page() {
-  const { data: userDomains } = useDomainUpdatedsUser();
+  const { data: userDomains } = useDomainUpdateds();
   const [selectedDomain, setSelectedDomain] = useState("");
   const [recipientAddress, setRecipientAddress] = useState("");
   const [domainMetadata, setDomainMetadata] = useState<Record<string, string>>({});

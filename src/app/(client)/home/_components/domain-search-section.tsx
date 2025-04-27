@@ -59,7 +59,7 @@ export const DomainSearchSection = ({
           name: domainName,
           price: calculatePrice(domainName),
           available: isAvailable,
-          duration: "1 year"
+          duration: "1 year",
         });
       }
     }
