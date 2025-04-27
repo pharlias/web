@@ -3,6 +3,8 @@ import {
   getDefaultConfig,
   Chain
 } from '@rainbow-me/rainbowkit'
+import { http } from 'viem';
+import { baseSepolia } from 'viem/chains';
 
 export const pharos = {
   id: pharosChainId,
@@ -23,5 +25,8 @@ export const pharos = {
 export const config = getDefaultConfig({
   appName: appName as string,
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID as string || '',
-  chains: [pharos],
+  chains: [pharos, baseSepolia],
+  transports: {
+    [baseSepolia.id]: http("https://base-sepolia.g.alchemy.com/v2/vwDTCZX0XZnU6flxj8YzYZuMaOKI3EX9")
+  }
 })

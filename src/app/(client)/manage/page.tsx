@@ -1,5 +1,4 @@
 "use client"
-import { useDomainRegisteredsUser } from '@/hooks/query/graphql/useDomainRegisteredsUser';
 import { Column, Fade, Flex, Grid, IconButton, Text } from '@/ui/components';
 import { ScrollToTop } from '@/ui/components/ScrollToTop';
 import React from 'react';
@@ -8,9 +7,10 @@ import { PageFooter } from '@/components/layout/footer';
 import { PageBackground } from '@/components/layout/background';
 import styles from "./page.module.scss";
 import ConnectButtonWrapper from '@/components/rainbow-kit/connect-button-wrapper';
+import { useDomainUpdatedsUser } from '@/hooks/query/graphql/useDomainUpdatedsUser';
 
 export default function Page() {
-  const { data } = useDomainRegisteredsUser();
+  const { data } = useDomainUpdatedsUser();
   
   return (
     <Column fillWidth paddingTop="80" paddingBottom="8" paddingX="s" horizontal="center" flex={1} className={styles.container}>

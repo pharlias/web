@@ -1,63 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Badge, Card, Column, Flex, Line, Row, Text } from '@/ui/components';
 import { useNFTMetadata } from '@/hooks/query/useNFTMetadata';
 import { NFTType } from '@/types/graphql/domain-registereds.type';
 import { ContractRentRegistrar } from '@/constans/contracts';
-import { useAccount, useWalletClient } from 'wagmi';
+import { useWalletClient } from 'wagmi';
+import { formatDate, getTimeRemaining, shortenAddress } from '@/lib/helper';
 
 export default function CardNFT({ nft }: { nft: NFTType }) {
-  const { data: metadataUrl } = useNFTMetadata(nft.tokenId);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { name, image } = useNFTMetadata(nft.tokenId);
   const [isAddingToWallet, setIsAddingToWallet] = useState(false);
-  const [isInWallet, setIsInWallet] = useState(false);
 
-  const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
-
-  const ipfsToGateway = (ipfsUri: string) => {
-    const cid = ipfsUri.replace("ipfs://", "");
-    return `https://ipfs.io/ipfs/${cid}`;
-  };
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      if (!metadataUrl || typeof metadataUrl !== 'string') return;
-      try {
-        const metadataRes = await fetch(ipfsToGateway(metadataUrl));
-        const metadataJson = await metadataRes.json();
-        if (metadataJson.image) {
-          setImageUrl(ipfsToGateway(metadataJson.image));
-        }
-      } catch (error) {
-        console.error('Failed to fetch IPFS metadata:', error);
-      }
-    };
-    fetchImage();
-  }, [metadataUrl]);
-
-  useEffect(() => {
-    if (address && nft.owner.toLowerCase() === address.toLowerCase()) {
-      setIsInWallet(true);
-    } else {
-      setIsInWallet(false);
-    }
-  }, [address, nft.owner]);
-
-  const formatDate = (timestamp: string) => {
-    const date = new Date(parseInt(timestamp) * 1000);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  };
-
-  const getTimeRemaining = () => {
-    const now = Date.now();
-    const expiry = parseInt(nft.expires) * 1000;
-    const timeLeft = expiry - now;
-    if (timeLeft <= 0) return 'Expired';
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    return days > 30 ? `${Math.floor(days / 30)} months left` : `${days} days left`;
-  };
-
-  const shortenAddress = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
   const addToWallet = async () => {
     try {
@@ -71,7 +24,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
 
       const tokenAddress = ContractRentRegistrar;
       const tokenId = nft.tokenId;
-      const tokenSymbol = "NFT";
+      const tokenSymbol = "DOMAIN";
 
       try {
         await walletClient.transport.request({
@@ -82,29 +35,13 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
               address: tokenAddress,
               tokenId: tokenId,
               symbol: tokenSymbol,
-              image: imageUrl || "",
+              image: image || "",
             },
           },
         });
-
-        setIsInWallet(true);
 
       } catch (err) {
-        console.warn("ERC721 method not supported, trying ERC20 fallback");
-        await walletClient.transport.request({
-          method: 'wallet_watchAsset',
-          params: {
-            type: 'ERC20',
-            options: {
-              address: tokenAddress,
-              symbol: tokenSymbol,
-              decimals: 0,
-              image: imageUrl || "",
-            },
-          },
-        });
-
-        setIsInWallet(true);
+        console.warn("ERC721 method not supported");
       }
 
       console.log("NFT added to wallet successfully");
@@ -118,14 +55,14 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
     }
   };
 
-  const timeStatus = getTimeRemaining();
+  const timeStatus = getTimeRemaining(nft.expires);
   const isExpired = timeStatus === 'Expired';
 
   return (
     <Card radius="l-4" direction="column" style={{ overflow: 'hidden', maxWidth: '350px' }}>
       <div style={{ position: 'relative' }}>
         <img
-          src={imageUrl || "/api/placeholder/300/300"}
+          src={image || "/api/placeholder/300/300"}
           alt={nft.name}
           style={{
             borderRadius: "30px",
@@ -161,7 +98,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
             whiteSpace: 'nowrap'
           }}
         >
-          {nft.name}.pharos
+          {name}
         </Text>
 
         <Text size='s' variant="label-default-s" onBackground="neutral-medium" style={{ color: '#5f5f5f' }}>
@@ -188,40 +125,29 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
         <Flex fillWidth horizontal="center" vertical="center" gap="8">
           <div
             onClick={() => {
-              if (!isAddingToWallet && !isInWallet) {
+              if (!isAddingToWallet) {
                 addToWallet();
               }
             }}
             style={{
-              cursor: isAddingToWallet || isInWallet ? 'not-allowed' : 'pointer',
+              cursor: isAddingToWallet ? 'not-allowed' : 'pointer',
               padding: '10px 20px',
-              backgroundColor: isInWallet ? '#1260cc' : '#1260cc',
+              backgroundColor: isAddingToWallet ? '#1260cc' : '#1260cc',
               color: 'white',
               borderRadius: '9999px',
               textAlign: 'center',
               fontWeight: '600',
-              boxShadow: isAddingToWallet || isInWallet
+              boxShadow: isAddingToWallet
                 ? 'none'
                 : '0 4px 14px rgba(0, 0, 0, 0.1)',
               transition: 'all 0.3s ease',
-              opacity: isAddingToWallet || isInWallet ? 0.6 : 1,
-              pointerEvents: isAddingToWallet || isInWallet ? 'none' : 'auto',
+              opacity: isAddingToWallet ? 0.6 : 1,
+              pointerEvents: isAddingToWallet ? 'none' : 'auto',
               userSelect: 'none',
             }}
-            onMouseOver={(e) => {
-              if (!isAddingToWallet && !isInWallet) {
-                e.currentTarget.style.backgroundColor = '#e04848';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (!isAddingToWallet && !isInWallet) {
-                e.currentTarget.style.backgroundColor = '#FF5757';
-              }
-            }}
           >
-            {isInWallet
-              ? 'Added to Wallet'
-              : isAddingToWallet
+            {
+              isAddingToWallet
                 ? 'Adding...'
                 : 'Add to Wallet'}
           </div>

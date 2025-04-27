@@ -1,4 +1,5 @@
-import { ContractRentRegistrar } from "@/constans/contracts";
+import { ContractNFTRegistrar, ContractRentRegistrar } from "@/constans/contracts";
+import { NFTRegistrarABI } from "@/lib/abis/NFTRegistrarABI";
 import { RentRegistrarABI } from "@/lib/abis/RentRegistrarABI";
 import { config } from "@/lib/wagmi";
 import { useMutation } from "@tanstack/react-query";
@@ -7,9 +8,8 @@ import { useState } from "react";
 import { parseGwei } from "viem";
 
 type Status = "idle" | "loading" | "success" | "error";
-type HexAddress = `0x${string}`;
 
-export const useRegisterPNS = () => {
+export const useTransferOwnership = () => {
   const [txHash, setTxHash] = useState<HexAddress | null>(null);
 
   const [steps, setSteps] = useState<
@@ -22,16 +22,20 @@ export const useRegisterPNS = () => {
     {
       step: 1,
       status: "idle",
+    },
+    {
+      step: 2,
+      status: "idle",
     }
   ]);
 
   const mutation = useMutation({
     mutationFn: async ({
       name,
-      toAddress
+      recipient
     }: {
       name: string;
-      toAddress: HexAddress;
+      recipient: HexAddress;
     }) => {
       try {
         setSteps([
@@ -48,17 +52,61 @@ export const useRegisterPNS = () => {
           })
         );
 
+        const approveHash = await writeContract(config, {
+          address: ContractNFTRegistrar,
+          abi: NFTRegistrarABI,
+          functionName: "setApprovalForAll",
+          args: [
+            ContractRentRegistrar,
+            true
+          ],
+          gas: BigInt(300_000),
+          maxFeePerGas: parseGwei('10'),
+          maxPriorityFeePerGas: parseGwei('2'),
+        });
+
+        const resultApprove = await waitForTransactionReceipt(config, {
+          hash: approveHash
+        });
+
+        if (!resultApprove) {
+          console.error("Failed to approve NFT");
+          throw new Error("Failed to approve NFT");
+        }
+
+        setSteps((prev) =>
+          prev.map((item) => {
+            if (item.step === 1) {
+              return { ...item, status: "success" };
+            }
+            return item;
+          })
+        );
+
+        const nameCleared = name.endsWith('.pharos')
+          ? name.split('.')[0]
+          : name;
+
+        setSteps((prev) =>
+          prev.map((item) => {
+            if (item.step === 2) {
+              return { ...item, status: "loading" };
+            }
+            return item;
+          })
+        );
+
         const txHash = await writeContract(config, {
           address: ContractRentRegistrar,
           abi: RentRegistrarABI,
           functionName: "transferOwnership",
           args: [
-            `${name}`,
-            toAddress
+            nameCleared,
+            recipient
           ],
-          gas: BigInt(300_000), 
-          maxFeePerGas: parseGwei('10'), 
-          maxPriorityFeePerGas: parseGwei('2'),
+          gas: BigInt(300_000),
+          maxFeePerGas: parseGwei('20'),
+          maxPriorityFeePerGas: parseGwei('5'),
         });
 
         setTxHash(txHash);
@@ -67,9 +115,11 @@ export const useRegisterPNS = () => {
           hash: txHash
         });
 
+        console.log("Transaction approve result:", result);
+
         setSteps((prev) =>
           prev.map((item) => {
-            if (item.step === 1) {
+            if (item.step === 2) {
               return { ...item, status: "success" };
             }
             return item;

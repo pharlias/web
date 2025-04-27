@@ -75,23 +75,6 @@ export const useRegisterPNS = () => {
           })
         );
 
-        // const registrationFee = await readContract(config, {
-        //   address: ContractDomainNameNFT,
-        //   abi: DomainNameNFTABI,
-        //   functionName: "registrationFee",
-        // }) as bigint;
-
-        // const txHash = await writeContract(config, {
-        //   address: ContractDomainNameNFT,
-        //   abi: DomainNameNFTABI,
-        //   functionName: "registerDomain",
-        //   args: [
-        //     `${name}.pharos`,
-        //     response.metadataURI
-        //   ],
-        //   value: registrationFee,
-        // });
-
         const price = await readContract(config, {
           address: ContractRentRegistrar,
           abi: RentRegistrarABI,
@@ -112,9 +95,9 @@ export const useRegisterPNS = () => {
             response.metadataURI
           ],
           value: price,
-          gas: BigInt(300_000), 
-          maxFeePerGas: parseGwei('10'), 
-          maxPriorityFeePerGas: parseGwei('2'),
+          gas: BigInt(500_000),
+          maxFeePerGas: parseGwei('20'), 
+          maxPriorityFeePerGas: parseGwei('4'),
         });
 
         setTxHash(txHash);
