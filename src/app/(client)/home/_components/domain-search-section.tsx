@@ -4,6 +4,7 @@ import styles from "../page.module.scss";
 import { PNS } from "@/types/pns.type";
 import ConnectButtonWrapper from "@/components/rainbow-kit/connect-button-wrapper";
 import { useAccount } from "wagmi";
+import { pharosNativeToken } from "@/constans/config";
 
 interface DomainSearchSectionProps {
   onDomainSelect: (domain: PNS) => void;
@@ -139,10 +140,10 @@ export const DomainSearchSection = ({
                     "Selected"
                   ) : currentAvailability !== null ? (
                     currentAvailability
-                      ? `Available | ~${calculatePrice(domainName)} ETH`
+                      ? `Available | ~${calculatePrice(domainName)} ${pharosNativeToken}`
                       : "Already Taken"
                   ) : (
-                    `Check Availability | ~${calculatePrice(domainName)} ETH`
+                    `Check Availability | ~${calculatePrice(domainName)} ${pharosNativeToken}`
                   )}
                 </Text>
               </Row>

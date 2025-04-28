@@ -42,7 +42,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
     <Card radius="l-4" direction="column" style={{ overflow: 'hidden', maxWidth: '350px' }}>
       <div style={{ position: 'relative' }}>
         <img
-          src={image || "/api/placeholder/300/300"}
+          src={image || "/images/placeholder-image.webp"}
           alt={nft.name}
           style={{
             borderRadius: "30px",
@@ -126,7 +126,7 @@ export default function CardNFT({ nft }: { nft: NFTType }) {
             isOpen={isDialogOpen}
             domainName={name || 'Unknown Domain'}
             handleClose={() => setIsDialogOpen(false)}
-            imageURI={image || "/api/placeholder/300/300"}
+            imageURI={image || "/images/placeholder-image.webp"}
             onConfirm={confirmUseDomain}
           />
         </Flex>

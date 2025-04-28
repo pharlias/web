@@ -5,7 +5,8 @@ const configApp = {
     chainId: 50002,
     logo: "https://res.cloudinary.com/dutlw7bko/image/upload/v1745240985/hackthon/pharos_zdfrra.png",
     rpc: "https://devnet.dplabs-internal.com",
-    explorer: "https://pharosscan.xyz"
+    explorer: "https://pharosscan.xyz",
+    nativeToken: "PTT"
   },
   links: {
     github: "https://github.com/pharlias",
@@ -21,6 +22,10 @@ const configApp = {
     {
       href: "/transfers",
       label: "Transfer"
+    },
+    {
+      href: "/rewards",
+      label: "Rewards"
     },
     {
       href: "/manage",
@@ -39,6 +44,12 @@ const configApp = {
       href: '/transfers',
       icon: 'transfer',
       label: 'Transfer',
+    },
+    {
+      description: 'Manage your rewards',
+      href: '/rewards',
+      icon: 'reward',
+      label: 'Rewards',
     },
     {
       description: 'Manage your domains',
@@ -89,6 +100,7 @@ export const pharosChainId = configApp.pharos.chainId;
 export const pharosLogo = configApp.pharos.logo;
 export const pharosRPC = configApp.pharos.rpc;
 export const pharosExplorer = configApp.pharos.explorer;
+export const pharosNativeToken = configApp.pharos.nativeToken;
 export const linksGithub = configApp.links.github;
 export const linksDocs = configApp.links.docs;
 export const linksTwitter = configApp.links.twitter;

@@ -23,6 +23,9 @@ importers:
       axios:
         specifier: ^1.9.0
         version: 1.9.0
+      bignumber.js:
+        specifier: ^9.3.0
+        version: 9.3.0
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -1217,6 +1220,9 @@ packages:
 
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
+
+  bignumber.js@9.3.0:
+    resolution: {integrity: sha512-EM7aMFTXbptt/wZdMlBv2t8IViwQL+h6SLHosp8Yf0dqJMTnY6iL32opnAB6kAdL0SZPuvcAzFr31o0c/R3/RA==}
 
   blueimp-canvas-to-blob@3.29.0:
     resolution: {integrity: sha512-0pcSSGxC0QxT+yVkivxIqW0Y4VlO2XSDPofBAqoJ1qJxgH9eiUDLv50Rixij2cDuEfx4M6DpD9UGZpRhT5Q8qg==}
@@ -4355,6 +4361,8 @@ snapshots:
   base-x@5.0.1: {}
 
   base64-js@1.5.1: {}
+
+  bignumber.js@9.3.0: {}
 
   blueimp-canvas-to-blob@3.29.0: {}
 

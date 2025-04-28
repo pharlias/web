@@ -17,6 +17,7 @@ import {
   HiExclamationCircle,
   HiExclamationTriangle,
   HiEyeDropper,
+  HiGift,
   HiHeart,
   HiHome,
   HiInformationCircle,
@@ -90,6 +91,7 @@ export const iconLibrary: Record<string, IconType> = {
   clock: HiClock,
   money: HiBanknotes,
   transfer: HiPaperAirplane,
+  reward: HiGift
 };
 
 export type IconLibrary = typeof iconLibrary;

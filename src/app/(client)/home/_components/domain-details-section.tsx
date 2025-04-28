@@ -5,6 +5,7 @@ import { useGenerateImage } from "@/hooks/mutation/useGenerateImage";
 import { useRegisterPNS } from "@/hooks/mutation/useRegisterPNS";
 import DialogGeneratedPNS from "@/components/dialog/dialog-generated-pns";
 import Loading from "@/components/loader/loading";
+import { pharosNativeToken } from "@/constans/config";
 
 interface DomainDetailsSectionProps {
   domain: PNS;
@@ -154,7 +155,7 @@ export const DomainDetailsSection = ({ domain, onReset }: DomainDetailsSectionPr
                 variant="ghost"
               />
               <Text variant="label-default-s" onBackground="neutral-medium">
-                {domain.price} ETH
+                {domain.price} {pharosNativeToken}
               </Text>
             </Row>
             <Row vertical="center" gap="4">
