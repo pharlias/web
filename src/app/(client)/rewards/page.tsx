@@ -145,7 +145,13 @@ export default function Page() {
                       <Text color="neutral-alpha-strong" className={styles.cardDesc}>
                         View your transaction history and points earned
                       </Text>
-                      <Button className={styles.cardButton} style={{ width: "100%" }}>View History</Button>
+                      <Button
+                        className={styles.cardButton}
+                        style={{ width: "100%" }}
+                        onClick={() => handleTabChange('history')}
+                      >
+                        View History
+                      </Button>
                     </Column>
                   </Row>
 
@@ -164,14 +170,14 @@ export default function Page() {
                           <Text className={styles.activityName}>Transfer with PNS</Text>
                           <Text className={styles.activityPoints}>+5 points</Text>
                         </Column>
-                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/transfers"}>Coming Soon</Button>
+                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/transfers"}>Go</Button>
                       </Row>
                       <Row className={styles.activityItem}>
                         <Column className={styles.activityInfo}>
                           <Text className={styles.activityName}>Create PNS</Text>
                           <Text className={styles.activityPoints}>+20 points</Text>
                         </Column>
-                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/home"}>Coming Soon</Button>
+                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/home"}>Go</Button>
                       </Row>
                     </Column>
                   </Column>
@@ -196,7 +202,9 @@ export default function Page() {
                       top: "50%",
                       left: "50%",
                       transform: "translate(-50%, -50%)",
-                    }}>
+                    }}
+                      arrow={false}
+                    >
                       Coming Soon
                     </Badge>
                   </div>

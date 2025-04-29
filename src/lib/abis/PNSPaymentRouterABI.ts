@@ -181,10 +181,10 @@ export const PNSPaymentRouterABI = [
         "type": "address"
       },
       {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "node",
-        "type": "bytes32"
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       },
       {
         "indexed": true,
@@ -243,10 +243,10 @@ export const PNSPaymentRouterABI = [
         "type": "address"
       },
       {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "node",
-        "type": "bytes32"
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       },
       {
         "indexed": false,
@@ -420,6 +420,45 @@ export const PNSPaymentRouterABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "debugPNSResolution",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "nodeHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "ownerAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "resolverAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "resolverResult",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "finalAddress",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

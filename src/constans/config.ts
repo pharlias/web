@@ -8,6 +8,9 @@ const configApp = {
     explorer: "https://pharosscan.xyz",
     nativeToken: "PTT"
   },
+  tokens: {
+    decimals: 18,
+  },
   links: {
     github: "https://github.com/pharlias",
     docs: "https://gitbook.io",
@@ -101,6 +104,7 @@ export const pharosLogo = configApp.pharos.logo;
 export const pharosRPC = configApp.pharos.rpc;
 export const pharosExplorer = configApp.pharos.explorer;
 export const pharosNativeToken = configApp.pharos.nativeToken;
+export const tokensDecimals = configApp.tokens.decimals;
 export const linksGithub = configApp.links.github;
 export const linksDocs = configApp.links.docs;
 export const linksTwitter = configApp.links.twitter;

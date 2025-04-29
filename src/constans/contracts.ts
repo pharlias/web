@@ -3,6 +3,11 @@
 // export const ContractPNSPaymentRouter = "0x2FDFa55b60cf6815200E5aC8Be1D8459831a360C"
 
 // Base sepolia contract for testing
-export const ContractNFTRegistrar = "0xeea757300bda4c32Bd7117E4402E33D02D6B044C"
-export const ContractRentRegistrar = "0xd56C4409dA49765eF16b62b6Ece8E0a6e5820e41"
-export const ContractPNSPaymentRouter = "0xb852c7DE8e5efF4887b6300CA68a1Bcae9b1B951"
+// export const ContractNFTRegistrar = "0x1AEA9A885B5B8A675f2dfA49c6AA448619Fc0391"
+// export const ContractRentRegistrar = "0xEca8De71535015f8acD5894fFF32afBf840C99ae"
+// export const ContractPNSPaymentRouter = "0xd219516a28CB72F3995144014BAB6BA481E82f54"
+
+// Holesky contract for testing
+export const ContractNFTRegistrar = "0xcBECEbE30173e5E93f6E2a045473fADe1b473e3b"
+export const ContractRentRegistrar = "0xcC5CFf4A86651d318e04Cdb090CE7670227dEF19"
+export const ContractPNSPaymentRouter = "0x1718D9B8725e73Ce896b7415ecB367cD32CCb551"
