@@ -4,7 +4,7 @@ import {
   Chain
 } from '@rainbow-me/rainbowkit'
 import { http } from 'viem';
-import { baseSepolia } from 'viem/chains';
+import { baseSepolia, holesky } from 'viem/chains';
 
 export const pharos = {
   id: pharosChainId,
@@ -25,8 +25,9 @@ export const pharos = {
 export const config = getDefaultConfig({
   appName: appName as string,
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID as string || '',
-  chains: [pharos, baseSepolia],
+  chains: [pharos, baseSepolia, holesky],
   transports: {
-    [baseSepolia.id]: http("https://base-sepolia.g.alchemy.com/v2/vwDTCZX0XZnU6flxj8YzYZuMaOKI3EX9")
+    [baseSepolia.id]: http("https://base-sepolia.g.alchemy.com/v2/vwDTCZX0XZnU6flxj8YzYZuMaOKI3EX9"),
+    [holesky.id]: http("https://eth-holesky.g.alchemy.com/v2/EB6qgZ7mRkqjUt7xoI_d3V_AjZuUkFpg"),
   }
 })

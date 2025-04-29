@@ -1,17 +1,18 @@
 "use client"
-import { Button, Column, Fade, Flex, IconButton, Row, Text } from '@/ui/components';
+import { Badge, Button, Column, Fade, Flex, Icon, IconButton, Row, Text } from '@/ui/components';
 import { ScrollToTop } from '@/ui/components/ScrollToTop';
 import React, { useState, useEffect } from 'react';
 import { PageFooter } from '@/components/layout/footer';
 import { PageBackground } from '@/components/layout/background';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from "./page.module.scss";
+import TabHistory from '@/components/tab/tab-history';
 
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const tabFromUrl = searchParams.get('tab');
   const [activeTab, setActiveTab] = useState(tabFromUrl || 'rewards');
 
@@ -29,18 +30,12 @@ export default function Page() {
     setActiveTab(tabName);
   };
 
-  const mockTransactions = [
-    { id: 1, type: 'Earned', amount: 200, date: '2025-04-20', status: 'completed' },
-    { id: 2, type: 'Redeemed', amount: 50, date: '2025-04-15', status: 'completed' },
-    { id: 3, type: 'Earned', amount: 75, date: '2025-04-10', status: 'pending' },
-  ];
-
   return (
     <Column fillWidth paddingTop="80" paddingBottom="8" paddingX="s" horizontal="center" flex={1} className={styles.container}>
       <ScrollToTop>
         <IconButton variant="secondary" icon="chevronUp" className={styles.scrollTopButton} />
       </ScrollToTop>
-      
+
       <Fade
         zIndex={3}
         pattern={{
@@ -55,7 +50,7 @@ export default function Page() {
         fillWidth
         blur={0.25}
       />
-      
+
       <Column
         overflow="hidden"
         as="main"
@@ -80,33 +75,33 @@ export default function Page() {
           className={styles.contentContainer}
         >
           <PageBackground />
-          
+
           <Row className={styles.pageHeader}>
             <Text variant="heading-default-l" className={styles.pageTitle}>
               Your Rewards
             </Text>
             <Column className={styles.totalPoints}>
-              <Text className={styles.pointsValue}>1,250</Text>
+              <Text className={styles.pointsValue}>0</Text>
               <Text className={styles.pointsLabel}>Total Points</Text>
             </Column>
           </Row>
 
           <Row className={styles.tabContainer}>
-            <Button 
+            <Button
               className={`${styles.tabButton} ${activeTab === 'rewards' ? styles.activeTab : ''}`}
               onClick={() => handleTabChange('rewards')}
               variant='tertiary'
             >
               My Rewards
             </Button>
-            <Button 
+            <Button
               className={`${styles.tabButton} ${activeTab === 'leaderboard' ? styles.activeTab : ''}`}
               onClick={() => handleTabChange('leaderboard')}
               variant='tertiary'
             >
               Leaderboard
             </Button>
-            <Button 
+            <Button
               className={`${styles.tabButton} ${activeTab === 'history' ? styles.activeTab : ''}`}
               onClick={() => handleTabChange('history')}
               variant='tertiary'
@@ -126,30 +121,34 @@ export default function Page() {
                 <Column className={styles.rewardsTab}>
                   <Row className={styles.cardsContainer}>
                     <Column className={styles.rewardCard}>
-                      <Flex className={styles.cardIcon}>🎁</Flex>
-                      <Text variant="heading-default-s" className={styles.cardTitle}>Available Rewards</Text>
-                      <Text color="neutral-alpha-strong" className={styles.cardDesc}>
-                        Redeem your points for exclusive benefits
-                      </Text>
-                      <Button className={styles.cardButton} style={{ width: "100%" }}>Browse Rewards</Button>
-                    </Column>
-                    
-                    <Column className={styles.rewardCard}>
-                      <Flex className={styles.cardIcon}>🏆</Flex>
+                      <Flex className={styles.cardIcon}>
+                        <Icon name='trophy' />
+                      </Flex>
                       <Text variant="heading-default-s" className={styles.cardTitle}>Your Ranking</Text>
                       <Text color="neutral-alpha-strong" className={styles.cardDesc}>
-                        Currently ranked #42 of 156 members
+                        Coming soon...
                       </Text>
-                      <Button 
-                        className={styles.cardButton} 
+                      <Button
+                        className={styles.cardButton}
                         style={{ width: "100%" }}
                         onClick={() => handleTabChange('leaderboard')}
                       >
                         View Leaderboard
                       </Button>
                     </Column>
+
+                    <Column className={styles.rewardCard}>
+                      <Flex className={styles.cardIcon}>
+                        <Icon name='clock' />
+                      </Flex>
+                      <Text variant="heading-default-s" className={styles.cardTitle}>History Transactions</Text>
+                      <Text color="neutral-alpha-strong" className={styles.cardDesc}>
+                        View your transaction history and points earned
+                      </Text>
+                      <Button className={styles.cardButton} style={{ width: "100%" }}>View History</Button>
+                    </Column>
                   </Row>
-                  
+
                   <Column className={styles.earnMoreSection}>
                     <Text variant="heading-default-s" className={styles.sectionTitle}>Earn More Points</Text>
                     <Column className={styles.activityList}>
@@ -158,146 +157,118 @@ export default function Page() {
                           <Text className={styles.activityName}>Daily check-in</Text>
                           <Text className={styles.activityPoints}>+10 points</Text>
                         </Column>
-                        <Button className={styles.activityButton} variant='tertiary'>Claim</Button>
+                        <Button className={styles.activityButton} variant='tertiary'>Coming Soon</Button>
                       </Row>
                       <Row className={styles.activityItem}>
                         <Column className={styles.activityInfo}>
                           <Text className={styles.activityName}>Transfer with PNS</Text>
                           <Text className={styles.activityPoints}>+5 points</Text>
                         </Column>
-                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/transfers"}>Go</Button>
+                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/transfers"}>Coming Soon</Button>
                       </Row>
                       <Row className={styles.activityItem}>
                         <Column className={styles.activityInfo}>
                           <Text className={styles.activityName}>Create PNS</Text>
                           <Text className={styles.activityPoints}>+20 points</Text>
                         </Column>
-                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/home"}>Go</Button>
+                        <Button className={styles.activityButton} variant='tertiary' onClick={() => window.location.href = "/home"}>Coming Soon</Button>
                       </Row>
                     </Column>
                   </Column>
                 </Column>
               )}
-              
+
               {activeTab === 'leaderboard' && (
-                <Column className={styles.leaderboardTab}>
-                  <Row className={styles.leaderboardHeader}>
-                    <Text className={styles.leaderboardTitle}>Top Members</Text>
-                    <select className={styles.periodSelector}>
-                      <option>This Week</option>
-                      <option>This Month</option>
-                      <option>All Time</option>
-                    </select>
-                  </Row>
-                  
-                  <Column className={styles.leaderboardList}>
-                    <Row className={`${styles.leaderboardItem} ${styles.topRanked}`}>
-                      <Text className={styles.leaderRank}>1</Text>
-                      <Flex className={styles.leaderAvatar}>👑</Flex>
-                      <Column className={styles.leaderInfo}>
-                        <Text className={styles.leaderName}>John Doe</Text>
-                        <Text className={styles.leaderPoints}>3,540 pts</Text>
-                      </Column>
+                <>
+                  <div style={{
+                    zIndex: 5,
+                    backdropFilter: "blur(2px)",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: "linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%)",
+                    borderRadius: "20px",
+                  }}>
+                    <Badge style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}>
+                      Coming Soon
+                    </Badge>
+                  </div>
+                  <Column className={styles.leaderboardTab} style={{
+                    padding: "10px",
+                  }}>
+                    <Row className={styles.leaderboardHeader}>
+                      <Text className={styles.leaderboardTitle}>Top Members</Text>
+                      <select className={styles.periodSelector}>
+                        <option>This Week</option>
+                        <option>This Month</option>
+                        <option>All Time</option>
+                      </select>
                     </Row>
-                    <Row className={styles.leaderboardItem}>
-                      <Text className={styles.leaderRank}>2</Text>
-                      <Flex className={styles.leaderAvatar}>🥈</Flex>
-                      <Column className={styles.leaderInfo}>
-                        <Text className={styles.leaderName}>Jane Smith</Text>
-                        <Text className={styles.leaderPoints}>3,120 pts</Text>
-                      </Column>
-                    </Row>
-                    <Row className={styles.leaderboardItem}>
-                      <Text className={styles.leaderRank}>3</Text>
-                      <Flex className={styles.leaderAvatar}>🥉</Flex>
-                      <Column className={styles.leaderInfo}>
-                        <Text className={styles.leaderName}>Robert Johnson</Text>
-                        <Text className={styles.leaderPoints}>2,980 pts</Text>
-                      </Column>
-                    </Row>
-                    <Row className={styles.leaderboardItem}>
-                      <Text className={styles.leaderRank}>4</Text>
-                      <Flex className={styles.leaderAvatar}>👤</Flex>
-                      <Column className={styles.leaderInfo}>
-                        <Text className={styles.leaderName}>Emily Davis</Text>
-                        <Text className={styles.leaderPoints}>2,450 pts</Text>
-                      </Column>
-                    </Row>
-                    <Row className={styles.leaderboardItem}>
-                      <Text className={styles.leaderRank}>5</Text>
-                      <Flex className={styles.leaderAvatar}>👤</Flex>
-                      <Column className={styles.leaderInfo}>
-                        <Text className={styles.leaderName}>Michael Wilson</Text>
-                        <Text className={styles.leaderPoints}>2,210 pts</Text>
-                      </Column>
-                    </Row>
-                    
-                    <Row className={`${styles.leaderboardItem} ${styles.yourRank}`}>
-                      <Text className={styles.leaderRank}>42</Text>
-                      <Flex className={styles.leaderAvatar}>👤</Flex>
-                      <Column className={styles.leaderInfo}>
-                        <Text className={styles.leaderName}>You</Text>
-                        <Text className={styles.leaderPoints}>1,250 pts</Text>
-                      </Column>
-                    </Row>
-                  </Column>
-                </Column>
-              )}
-              
-              {activeTab === 'history' && (
-                <Column className={styles.historyTab}>
-                  <Row className={styles.transactionFilters}>
-                    <select className={styles.typeFilter}>
-                      <option>All Types</option>
-                      <option>Earned</option>
-                      <option>Redeemed</option>
-                    </select>
-                    <select className={styles.dateFilter}>
-                      <option>Last 30 Days</option>
-                      <option>Last 3 Months</option>
-                      <option>Last Year</option>
-                    </select>
-                  </Row>
-                  
-                  <Column className={styles.transactionTable}>
-                    <Row className={styles.tableHeader}>
-                      <Text className={styles.tableHeaderCell}>Type</Text>
-                      <Text className={styles.tableHeaderCell}>Amount</Text>
-                      <Text className={styles.tableHeaderCell}>Date</Text>
-                      <Text className={styles.tableHeaderCell}>Status</Text>
-                    </Row>
-                    
-                    {mockTransactions.map(transaction => (
-                      <Row key={transaction.id} className={styles.tableRow}>
-                        <Flex className={styles.tableCell}>
-                          <Text className={`${styles.transactionType} ${styles[transaction.type.toLowerCase()]}`}>
-                            {transaction.type}
-                          </Text>
-                        </Flex>
-                        <Flex className={styles.tableCell}>
-                          <Text className={styles.pointsAmount}>
-                            {transaction.type === 'Earned' ? '+' : '-'}{transaction.amount} pts
-                          </Text>
-                        </Flex>
-                        <Flex className={styles.tableCell}>
-                          <Text>{transaction.date}</Text>
-                        </Flex>
-                        <Flex className={styles.tableCell}>
-                          <Text className={`${styles.statusBadge} ${styles[transaction.status]}`}>
-                            {transaction.status}
-                          </Text>
-                        </Flex>
+
+                    <Column className={styles.leaderboardList}>
+                      <Row className={`${styles.leaderboardItem} ${styles.topRanked}`}>
+                        <Text className={styles.leaderRank}>1</Text>
+                        <Flex className={styles.leaderAvatar}>👑</Flex>
+                        <Column className={styles.leaderInfo}>
+                          <Text className={styles.leaderName}>John Doe</Text>
+                          <Text className={styles.leaderPoints}>3,540 pts</Text>
+                        </Column>
                       </Row>
-                    ))}
-                  </Column>
-                  
-                  {mockTransactions.length === 0 && (
-                    <Column className={styles.emptyState}>
-                      <Flex className={styles.emptyIcon}>📋</Flex>
-                      <Text color="neutral-alpha-strong">No transaction history yet</Text>
+                      <Row className={styles.leaderboardItem}>
+                        <Text className={styles.leaderRank}>2</Text>
+                        <Flex className={styles.leaderAvatar}>🥈</Flex>
+                        <Column className={styles.leaderInfo}>
+                          <Text className={styles.leaderName}>Jane Smith</Text>
+                          <Text className={styles.leaderPoints}>3,120 pts</Text>
+                        </Column>
+                      </Row>
+                      <Row className={styles.leaderboardItem}>
+                        <Text className={styles.leaderRank}>3</Text>
+                        <Flex className={styles.leaderAvatar}>🥉</Flex>
+                        <Column className={styles.leaderInfo}>
+                          <Text className={styles.leaderName}>Robert Johnson</Text>
+                          <Text className={styles.leaderPoints}>2,980 pts</Text>
+                        </Column>
+                      </Row>
+                      <Row className={styles.leaderboardItem}>
+                        <Text className={styles.leaderRank}>4</Text>
+                        <Flex className={styles.leaderAvatar}>👤</Flex>
+                        <Column className={styles.leaderInfo}>
+                          <Text className={styles.leaderName}>Emily Davis</Text>
+                          <Text className={styles.leaderPoints}>2,450 pts</Text>
+                        </Column>
+                      </Row>
+                      <Row className={styles.leaderboardItem}>
+                        <Text className={styles.leaderRank}>5</Text>
+                        <Flex className={styles.leaderAvatar}>👤</Flex>
+                        <Column className={styles.leaderInfo}>
+                          <Text className={styles.leaderName}>Michael Wilson</Text>
+                          <Text className={styles.leaderPoints}>2,210 pts</Text>
+                        </Column>
+                      </Row>
+
+                      <Row className={`${styles.leaderboardItem} ${styles.yourRank}`}>
+                        <Text className={styles.leaderRank}>42</Text>
+                        <Flex className={styles.leaderAvatar}>👤</Flex>
+                        <Column className={styles.leaderInfo}>
+                          <Text className={styles.leaderName}>You</Text>
+                          <Text className={styles.leaderPoints}>1,250 pts</Text>
+                        </Column>
+                      </Row>
                     </Column>
-                  )}
-                </Column>
+                  </Column>
+                </>
+              )}
+
+              {activeTab === 'history' && (
+                <TabHistory />
               )}
             </Flex>
           )}

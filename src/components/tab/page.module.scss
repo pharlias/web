@@ -1,0 +1,651 @@
+// Variables
+$primary-color: #4f46e5;
+$primary-hover: #4338ca;
+$success-color: #10b981;
+$error-color: #ef4444;
+$warning-color: #f59e0b;
+$info-color: #3b82f6;
+$neutral-color: #6b7280;
+$card-bg: rgba(255, 255, 255, 0.05);
+$card-border: rgba(255, 255, 255, 0.1);
+// $text-primary: rgba(255, 255, 255, 0.9);
+$text-secondary: rgba(255, 255, 255, 0.6);
+
+@mixin glassmorphism {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  min-height: 100vh;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.contentContainer {
+  min-height: 70vh;
+  position: relative;
+}
+
+.scrollTopButton {
+  transition: all 0.3s ease;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.pageHeader {
+  @include flex-between;
+  width: 100%;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $card-border;
+}
+
+.pageTitle {
+  font-weight: 700;
+  // background: linear-gradient(90deg, $text-primary, $primary-color);
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin: 0;
+}
+
+.totalPoints {
+  @include flex-column;
+  align-items: flex-end;
+
+  .pointsValue {
+    font-size: 2rem;
+    font-weight: 700;
+    // color: $text-primary;
+  }
+
+  .pointsLabel {
+    font-size: 0.9rem;
+    color: $text-secondary;
+  }
+}
+
+.tabContainer {
+  @include flex-center;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid $card-border;
+  padding-bottom: 0.5rem;
+}
+
+.tabButton {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    // color: $text-primary;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &.activeTab {
+    // color: $text-primary;
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: $primary-color;
+      border-radius: 3px;
+    }
+  }
+}
+
+.tabContent {
+  width: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.loadingState {
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  width: 100%;
+  gap: 1rem;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: $primary-color;
+  animation: spin 1s linear infinite;
+}
+
+.rewardsTab {
+  @include flex-column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.rewardCard {
+  @include glassmorphism;
+  @include flex-column;
+  padding: 1.5rem;
+  border-radius: 12px;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, $primary-color, $info-color);
+    opacity: 0.7;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.cardIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.cardDesc {
+  color: $text-secondary;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.cardButton {
+  background: $primary-color;
+  // color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: auto;
+
+  &:hover {
+    background: $primary-hover;
+    transform: translateY(-2px);
+  }
+}
+
+.earnMoreSection {
+  @include flex-column;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  // color: $text-primary;
+}
+
+.periodSelector {
+  color: $text-secondary;
+}
+
+.typeFilter {
+  color: $text-secondary;
+}
+
+.dateFilter {
+  color: $text-secondary;
+}
+
+.activityList {
+  @include flex-column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.activityItem {
+  @include flex-between;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  background: $card-bg;
+  border: 1px solid $card-border;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.activityInfo {
+  @include flex-column;
+  gap: 0.25rem;
+}
+
+.activityName {
+  font-weight: 500;
+  // color: $text-primary;
+}
+
+.activityPoints {
+  font-size: 0.9rem;
+  color: $success-color;
+  font-weight: 600;
+}
+
+.activityButton {
+  background: transparent;
+  border: 1px solid $primary-color;
+  // color: $primary-color;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: $primary-color;
+    // color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Leaderboard tab
+.leaderboardTab {
+  @include flex-column;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.leaderboardHeader {
+  @include flex-between;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.leaderboardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  // color: $text-primary;
+}
+
+.periodSelector {
+  background: $card-bg;
+  border: 1px solid $card-border;
+  // color: $text-primary;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    // border-color: $primary-color;
+  }
+}
+
+.leaderboardList {
+  @include flex-column;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.leaderboardItem {
+  @include flex-between;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  background: $card-bg;
+  border: 1px solid $card-border;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  &.topRanked {
+    background: linear-gradient(90deg, rgba($primary-color, 0.1), rgba($primary-color, 0.05));
+    // border-color: rgba($primary-color, 0.3);
+  }
+
+  &.yourRank {
+    background: linear-gradient(90deg, rgba($info-color, 0.1), rgba($info-color, 0.05));
+    border-color: rgba($info-color, 0.3);
+    margin-top: 1rem;
+    position: relative;
+
+    &::before {
+      content: 'Your Position';
+      position: absolute;
+      top: -1.5rem;
+      left: 0;
+      font-size: 0.8rem;
+      color: $info-color;
+    }
+  }
+}
+
+.leaderRank {
+  font-size: 1.25rem;
+  font-weight: 700;
+  // color: $text-secondary;
+  width: 30px;
+  text-align: center;
+}
+
+.leaderAvatar {
+  width: 40px;
+  height: 40px;
+  @include flex-center;
+  background: $card-bg;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  margin: 0 1rem;
+}
+
+.leaderInfo {
+  @include flex-column;
+  flex-grow: 1;
+}
+
+.leaderName {
+  font-weight: 600;
+  // color: $text-primary;
+}
+
+.leaderPoints {
+  font-size: 0.9rem;
+  // color: $primary-color;
+}
+
+// History tab
+.historyTab {
+  @include flex-column;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.transactionFilters {
+  @include flex-between;
+  width: 100%;
+  margin-bottom: 1rem;
+  gap: 1rem;
+
+  select {
+    background: $card-bg;
+    border: 1px solid $card-border;
+    // color: $text-primary;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+}
+
+.transactionTable {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid $card-border;
+}
+
+.tableHeader {
+  @include flex-between;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  font-weight: 600;
+  // color: $text-primary;
+}
+
+.tableHeaderCell {
+  flex: 1;
+  padding: 0 0.5rem;
+
+  &:first-child {
+    flex: 0.8;
+  }
+}
+
+.tableRow {
+  @include flex-between;
+  width: 100%;
+  padding: 1rem;
+  border-top: 1px solid $card-border;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.tableCell {
+  flex: 1;
+  padding: 0 0.5rem;
+
+  &:first-child {
+    flex: 0.8;
+  }
+}
+
+.transactionType {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  &.transfer {
+    background: rgba($success-color, 0.1);
+    color: $success-color;
+  }
+
+  &.create-pns {
+    background: rgba($primary-color, 0.1);
+    // color: $primary-color;
+  }
+}
+
+.pointsAmount {
+  font-weight: 600;
+
+  &:first-letter {
+    color: $success-color;
+  }
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  &.completed {
+    background: rgba($success-color, 0.1);
+    color: $success-color;
+  }
+
+  &.pending {
+    background: rgba($warning-color, 0.1);
+    color: $warning-color;
+  }
+
+  &.failed {
+    background: rgba($error-color, 0.1);
+    color: $error-color;
+  }
+}
+
+// Empty state
+.emptyState {
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 100%;
+  gap: 1rem;
+  color: $text-secondary;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .cardsContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .totalPoints {
+    align-items: flex-start;
+  }
+
+  .tabContainer {
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 1rem;
+  }
+
+  .transactionFilters {
+    flex-direction: column;
+    align-items: flex-start;
+
+    select {
+      width: 100%;
+    }
+  }
+
+  .tableHeader,
+  .tableRow {
+    font-size: 0.85rem;
+  }
+}

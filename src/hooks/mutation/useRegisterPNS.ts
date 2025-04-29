@@ -80,7 +80,8 @@ export const useRegisterPNS = () => {
           abi: RentRegistrarABI,
           functionName: "rentPrice",
           args: [
-            BigInt(1)
+            BigInt(1),
+            `${name}`,
           ]
         }) as bigint;
 

@@ -9,6 +9,7 @@ import styles from "./page.module.scss";
 import ConnectButtonWrapper from '@/components/rainbow-kit/connect-button-wrapper';
 import { pharosNativeToken } from '@/constans/config';
 import { useAccountBalance } from '@/hooks/query/useAccountBalance';
+import { useTransferETHToPNS } from '@/hooks/mutation/useTransferETHToPNS';
 
 const listNameService = [
   {
@@ -49,7 +50,8 @@ export default function Page() {
   const [filteredNameServices, setFilteredNameServices] = useState<typeof listNameService>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { bNormalized } = useAccountBalance({}) 
+  const { bNormalized } = useAccountBalance({});
+  const { mutation } = useTransferETHToPNS();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +105,19 @@ export default function Page() {
       return;
     }
 
-    console.log("Transferring", amount, pharosNativeToken, "to", pnsInput);
+    mutation.mutate({
+      name: pnsInput,
+      amount: amount,
+    }, {
+      onSuccess: (data) => {
+        console.log("Transfer successful:", data);
+        alert("Transfer successful!");
+      },
+      onError: (error) => {
+        console.error("Transfer failed:", error);
+        alert("Transfer failed. Please try again.");
+      },
+    });
   };
 
   return (

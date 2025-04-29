@@ -38,6 +38,7 @@ import {
   HiOutlineSparkles,
   HiOutlineSun,
   HiPaperAirplane,
+  HiTrophy,
   HiWallet,
 } from "react-icons/hi2";
 
@@ -91,7 +92,8 @@ export const iconLibrary: Record<string, IconType> = {
   clock: HiClock,
   money: HiBanknotes,
   transfer: HiPaperAirplane,
-  reward: HiGift
+  reward: HiGift,
+  trophy: HiTrophy
 };
 
 export type IconLibrary = typeof iconLibrary;
