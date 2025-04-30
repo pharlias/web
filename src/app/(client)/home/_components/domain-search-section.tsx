@@ -253,7 +253,7 @@ export const DomainSearchSection = ({ onDomainSelect }: DomainSearchSectionProps
                       }}
                       onClick={suggestionAvailable ? () => handleSelectSuggestion(suggestion) : undefined}
                     >
-                      <Text>{suggestion}.pharos</Text>
+                      <Text>{suggestion}</Text>
                       {isLoading ? (
                         <Spinner size="xs" style={{ marginLeft: 4 }} />
                       ) : (
