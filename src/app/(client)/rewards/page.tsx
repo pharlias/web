@@ -1,14 +1,15 @@
 "use client"
 import { Badge, Button, Column, Fade, Flex, Icon, IconButton, Row, Text } from '@/ui/components';
 import { ScrollToTop } from '@/ui/components/ScrollToTop';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { PageFooter } from '@/components/layout/footer';
 import { PageBackground } from '@/components/layout/background';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from "./page.module.scss";
 import TabHistory from '@/components/tab/tab-history';
+import Loading from '@/components/loader/loading';
 
-export default function Page() {
+export function PageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -284,5 +285,13 @@ export default function Page() {
         <PageFooter />
       </Column>
     </Column>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <PageContent />
+    </Suspense>
   );
 }
