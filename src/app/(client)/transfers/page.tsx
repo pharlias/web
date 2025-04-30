@@ -192,7 +192,7 @@ export default function Page() {
                     <span className={styles.currencyLabel}>.pharos</span>
                     {isDropdownOpen && filteredNameServices.length > 0 && (
                       <div className={styles.dropdown}>
-                        {filteredNameServices.map((item: DomainUpdatedsCurType) => (
+                        {filteredNameServices.slice(0, 5).map((item: DomainUpdatedsCurType) => (
                           <div
                             key={item.id}
                             className={styles.dropdownItem}
