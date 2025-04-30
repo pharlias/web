@@ -5,49 +5,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PageFooter } from '@/components/layout/footer';
 import { PageBackground } from '@/components/layout/background';
 import styles from "./page.module.scss";
-// import Loading from '@/components/loader/loading';
 import ConnectButtonWrapper from '@/components/rainbow-kit/connect-button-wrapper';
 import { pharosNativeToken } from '@/constans/config';
 import { useAccountBalance } from '@/hooks/query/useAccountBalance';
 import { useTransferETHToPNS } from '@/hooks/mutation/useTransferETHToPNS';
-
-const listNameService = [
-  {
-    "blockNumber": 24999438,
-    "blockTimestamp": 1745767164,
-    "expires": 1777303164,
-    "id": "e61099b2ad959ee95dfda0431b5e9359f18aafc5655635b86766e52b59eb71d2",
-    "name": "akbarkarbu",
-    "owner": "0x3B4f0135465d444a5bD06Ab90fC59B73916C85F5",
-    "tokenId": "11042402670429195402652322962130643585105215340262615376066753061456405062362",
-    "transactionHash": "0xd9d3bacd455ce5c814c2d9a90da0014081754cd5bf8d3f8c3e9924589d48b6c1"
-  },
-  {
-    "blockNumber": 24999300,
-    "blockTimestamp": 1745766888,
-    "expires": 1777302888,
-    "id": "aadf81554af8dd1b12398fe1430322e888a50607207e5c8d2083c0000fa495e0",
-    "name": "fajar",
-    "owner": "0x3B4f0135465d444a5bD06Ab90fC59B73916C85F5",
-    "tokenId": "29270649576026935457520342402169056026320720217515482806726273981520883851229",
-    "transactionHash": "0x169078c9171ca4bf27942b8847075b14cfb8c3c30513e5636356cc2978a06083"
-  },
-  {
-    "blockNumber": 24978133,
-    "blockTimestamp": 1745724554,
-    "expires": 1777260554,
-    "id": "9094dc94c85d45a21043ee21c7ff1684d186dfddf21edc5c2dd801fd1fb30830",
-    "name": "p",
-    "owner": "0x2b0C849c8a263cC6e680F40fbCa8Cb75f8bCe81A",
-    "tokenId": "15839622151235328338992417200276513453392043559189476109745974925571748283563",
-    "transactionHash": "0x652afd5191c7fbcd38247315060f463c51fa43ef78e1068b7248bf59841ff27f"
-  }
-];
+import { useDomainUpdateds } from '@/hooks/query/graphql/useDomainUpdateds';
+import { DomainUpdatedsCurType } from '@/types/graphql/domain-updated.type';
 
 export default function Page() {
   const [amount, setAmount] = useState("");
   const [pnsInput, setPnsInput] = useState("");
-  const [filteredNameServices, setFilteredNameServices] = useState<typeof listNameService>([]);
+  const [filteredNameServices, setFilteredNameServices] = useState<DomainUpdatedsCurType[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { bNormalized } = useAccountBalance({});
@@ -55,13 +23,20 @@ export default function Page() {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const { data } = useDomainUpdateds()
+
   useEffect(() => {
     if (pnsInput.trim() === '') {
       setFilteredNameServices([]);
       return;
     }
 
-    const filtered = listNameService.filter(item =>
+    if (!data || data.length === 0) {
+      setFilteredNameServices([]);
+      return;
+    }
+
+    const filtered = data.filter(item =>
       item.name.toLowerCase().includes(pnsInput.toLowerCase())
     );
     setFilteredNameServices(filtered);
@@ -217,7 +192,7 @@ export default function Page() {
                     <span className={styles.currencyLabel}>.pharos</span>
                     {isDropdownOpen && filteredNameServices.length > 0 && (
                       <div className={styles.dropdown}>
-                        {filteredNameServices.map((item) => (
+                        {filteredNameServices.map((item: DomainUpdatedsCurType) => (
                           <div
                             key={item.id}
                             className={styles.dropdownItem}
