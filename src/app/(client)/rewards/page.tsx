@@ -9,7 +9,7 @@ import styles from "./page.module.scss";
 import TabHistory from '@/components/tab/tab-history';
 import Loading from '@/components/loader/loading';
 
-export function PageContent() {
+function PageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
