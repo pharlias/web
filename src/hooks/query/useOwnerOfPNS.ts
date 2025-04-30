@@ -8,6 +8,11 @@ export const useOwnerOfPNS = (name: string) => {
     abi: PNSPaymentRouterABI,
     functionName: "getNodeHash",
     args: [name],
+    query: {
+      enabled: !!name,
+      refetchInterval: 1000,
+      retryDelay: 1000,
+    }
   });
 
   const { data: address } = useReadContract({
@@ -18,6 +23,11 @@ export const useOwnerOfPNS = (name: string) => {
       name,
       nodeHash
     ],
+    query: {
+      enabled: !!nodeHash,
+      refetchInterval: 1000,
+      retryDelay: 1000,
+    }
   });
 
   return { 

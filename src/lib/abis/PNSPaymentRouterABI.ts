@@ -181,6 +181,12 @@ export const PNSPaymentRouterABI = [
         "type": "address"
       },
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
         "indexed": false,
         "internalType": "string",
         "name": "name",
@@ -240,6 +246,12 @@ export const PNSPaymentRouterABI = [
         "indexed": true,
         "internalType": "address",
         "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
         "type": "address"
       },
       {

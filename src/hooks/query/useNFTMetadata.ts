@@ -12,6 +12,11 @@ export const useNFTMetadata = (tokenId: string) => {
     abi: NFTRegistrarABI,
     functionName: "tokenURI",
     args: [BigInt(tokenId)],
+    query: {
+      enabled: !!tokenId,
+      refetchInterval: 1000,
+      retryDelay: 1000,
+    }
   });
 
   const ipfsLink = typeof data === "string" ? data.replace("ipfs://", "https://ipfs.io/ipfs/") : undefined;

@@ -8,25 +8,9 @@ import { DomainSearchSection } from "./_components/domain-search-section";
 import { DomainDetailsSection } from "./_components/domain-details-section";
 import { PageFooter } from "@/components/layout/footer";
 import { PageBackground } from "@/components/layout/background";
-import { useDomainRegistereds } from "@/hooks/query/graphql/useDomainRegistereds";
 
 export default function Home() {
   const [selectedDomain, setSelectedDomain] = useState<PNS | null>(null);
-  const { data, isLoading } = useDomainRegistereds();
-  
-  const checkDomainAvailability = (domainName: string) => {
-    if (!domainName) return true;
-    return !data?.some(domain => domain.name.toLowerCase() === domainName.toLowerCase());
-  };
-
-  const handleDomainSelect = (domain: PNS) => {
-    console.log("Selected domain:", domain); 
-    const isAvailable = checkDomainAvailability(domain.name);
-    setSelectedDomain({
-      ...domain,
-      available: isAvailable
-    });
-  };
 
   const handleReset = () => {
     setSelectedDomain(null);
@@ -97,10 +81,12 @@ export default function Home() {
             </Text>
           )}
           {!selectedDomain ? (
-            <DomainSearchSection 
-              onDomainSelect={handleDomainSelect} 
-              checkAvailability={checkDomainAvailability}
-              isLoading={isLoading}
+            <DomainSearchSection
+              onDomainSelect={
+                (domain: PNS) => {
+                  setSelectedDomain(domain);
+                }
+              }
             />
           ) : (
             <DomainDetailsSection domain={selectedDomain} onReset={handleReset} />

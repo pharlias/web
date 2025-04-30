@@ -1,90 +1,173 @@
 import { useState, useEffect } from "react";
 import { Badge, Column, Icon, Input, Text, Row, Button, Spinner } from "@/ui/components";
 import styles from "../page.module.scss";
-import { PNS } from "@/types/pns.type";
 import ConnectButtonWrapper from "@/components/rainbow-kit/connect-button-wrapper";
 import { useAccount } from "wagmi";
 import { pharosNativeToken } from "@/constans/config";
+import { readContract } from "@wagmi/core";
+import { config } from "@/lib/wagmi";
+import { ContractRentRegistrar } from "@/constans/contracts";
+import { RentRegistrarABI } from "@/lib/abis/RentRegistrarABI";
 
 interface DomainSearchSectionProps {
-  onDomainSelect: (domain: PNS) => void;
-  checkAvailability: (domainName: string) => boolean;
-  isLoading: boolean;
+  onDomainSelect: (domain: { name: string; price: string; available: boolean; duration: string }) => void;
 }
 
-export const DomainSearchSection = ({
-  onDomainSelect,
-  checkAvailability,
-  isLoading
-}: DomainSearchSectionProps) => {
+export const DomainSearchSection = ({ onDomainSelect }: DomainSearchSectionProps) => {
   const [domainName, setDomainName] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [currentAvailability, setCurrentAvailability] = useState<boolean | null>(null);
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [suggestionAvailability, setSuggestionAvailability] = useState<Record<string, boolean>>({});
 
   const { isConnected } = useAccount();
 
-  useEffect(() => {
-    if (domainName.trim().length > 0) {
-      const baseName = domainName.trim().toLowerCase();
-      const newSuggestions = [
-        `my${baseName}`,
-        `${baseName}dao`,
-        `${baseName}nft`,
-        `${baseName}web3`,
-      ];
-      setSuggestions(newSuggestions);
-
-      setCurrentAvailability(checkAvailability(baseName));
-      setSelectedDomain(null);
-    } else {
-      setSuggestions([]);
-      setCurrentAvailability(null);
-      setSelectedDomain(null);
+  const checkAvailability = async (domain: string) => {
+    try {
+      setIsLoading(true);
+      const isAvailable = await readContract(config, {
+        address: ContractRentRegistrar,
+        abi: RentRegistrarABI,
+        functionName: "isAvailable",
+        args: [domain],
+      });
+      return !!isAvailable;
+    } catch (error) {
+      console.error("Error checking domain availability:", error);
+      return false;
+    } finally {
+      setIsLoading(false);
     }
-  }, [domainName, checkAvailability]);
-
-  const calculatePrice = (name: string) => {
-    const basePrice = 0.0001;
-    const lengthFactor = Math.max(1, 10 - name.length) * 0.00001;
-    return (basePrice + lengthFactor).toFixed(4);
   };
 
-  const handleSelectDomain = () => {
-    if (domainName.trim()) {
-      const isAvailable = checkAvailability(domainName);
+  useEffect(() => {
+    const checkMainDomainAvailability = async () => {
+      if (domainName.trim().length > 0) {
+        const baseName = domainName.trim().toLowerCase();
+        const newSuggestions = [
+          `my${baseName}`,
+          `${baseName}dao`,
+          `${baseName}nft`,
+          `${baseName}web3`,
+        ];
+        setSuggestions(newSuggestions);
 
-      if (isAvailable) {
-        setSelectedDomain(domainName);
-        onDomainSelect({
-          name: domainName,
-          price: calculatePrice(domainName),
-          available: isAvailable,
-          duration: "1 year",
+        // Check main domain availability
+        setIsLoading(true);
+        try {
+          const isAvailable = await readContract(config, {
+            address: ContractRentRegistrar,
+            abi: RentRegistrarABI,
+            functionName: "isAvailable",
+            args: [domainName],
+          });
+          setCurrentAvailability(!!isAvailable);
+        } catch (error) {
+          console.error("Error checking availability:", error);
+          setCurrentAvailability(null);
+        } finally {
+          setIsLoading(false);
+        }
+        setSelectedDomain(null);
+      } else {
+        setSuggestions([]);
+        setCurrentAvailability(null);
+        setSelectedDomain(null);
+      }
+    };
+
+    checkMainDomainAvailability();
+  }, [domainName]);
+
+  useEffect(() => {
+    const checkSuggestionAvailability = async () => {
+      if (suggestions.length > 0) {
+        const availabilityResults: Record<string, boolean> = {};
+        for (const suggestion of suggestions) {
+          availabilityResults[suggestion] = await checkAvailability(suggestion);
+        }
+        setSuggestionAvailability(availabilityResults);
+      }
+    };
+
+    if (isConnected && suggestions.length > 0) {
+      checkSuggestionAvailability();
+    }
+  }, [suggestions, isConnected]);
+
+  const calculatePrice = (name: string) => {
+    const length = name.length;
+    if (length <= 3) {
+      return "1.0";
+    }
+    if (length <= 5) {
+      return "0.8";
+    }
+    if (length <= 9) {
+      return "0.5";
+    }
+    return "0.1";
+  };
+
+  const handleSelectDomain = async () => {
+    if (domainName.trim()) {
+      setIsLoading(true);
+      try {
+        const isAvailable = await readContract(config, {
+          address: ContractRentRegistrar,
+          abi: RentRegistrarABI,
+          functionName: "isAvailable",
+          args: [domainName],
         });
+
+        if (isAvailable) {
+          setSelectedDomain(domainName);
+          onDomainSelect({
+            name: domainName,
+            price: calculatePrice(domainName),
+            available: true,
+            duration: "1 year"
+          });
+        } else {
+          setCurrentAvailability(false);
+        }
+      } catch (error) {
+        console.error("Error selecting domain:", error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const sanitizedInput = e.target.value.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-    if (sanitizedInput.length > 10) {
-      setDomainName(sanitizedInput.slice(0, 10));
+    if (sanitizedInput.length > 12) {
+      setDomainName(sanitizedInput.slice(0, 12));
       return;
     }
     setDomainName(sanitizedInput);
   };
 
-  const handleSelectSuggestion = (suggestion: string) => {
+  const handleSelectSuggestion = async (suggestion: string) => {
     setDomainName(suggestion);
-    if (checkAvailability(suggestion)) {
-      setSelectedDomain(suggestion);
-      onDomainSelect({
-        name: suggestion,
-        price: calculatePrice(suggestion),
-        available: true,
-        duration: "1 year"
-      });
+    setIsLoading(true);
+    
+    try {
+      const isAvailable = await checkAvailability(suggestion);
+      if (isAvailable) {
+        setSelectedDomain(suggestion);
+        onDomainSelect({
+          name: suggestion,
+          price: calculatePrice(suggestion),
+          available: true,
+          duration: "1 year"
+        });
+      }
+    } catch (error) {
+      console.error("Error selecting suggestion:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -156,7 +239,7 @@ export const DomainSearchSection = ({
               </Text>
               <Row gap="8" style={{ flexWrap: "wrap" }}>
                 {suggestions.map((suggestion, index) => {
-                  const suggestionAvailable = checkAvailability(suggestion);
+                  const suggestionAvailable = suggestionAvailability[suggestion] || false;
                   return (
                     <Button
                       key={index}

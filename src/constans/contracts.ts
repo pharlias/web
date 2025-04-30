@@ -1,13 +1,4 @@
-// export const ContractNFTRegistrar = "0xFD7d23c5E4F1B45B425ee06DaAD06203b804c5d9"
-// export const ContractRentRegistrar = "0x1AEf3D949Dc764D9ac23080977225bb309003779"
-// export const ContractPNSPaymentRouter = "0x2FDFa55b60cf6815200E5aC8Be1D8459831a360C"
-
-// Base sepolia contract for testing
-// export const ContractNFTRegistrar = "0x1AEA9A885B5B8A675f2dfA49c6AA448619Fc0391"
-// export const ContractRentRegistrar = "0xEca8De71535015f8acD5894fFF32afBf840C99ae"
-// export const ContractPNSPaymentRouter = "0xd219516a28CB72F3995144014BAB6BA481E82f54"
-
-// Holesky contract for testing
-export const ContractNFTRegistrar = "0xcBECEbE30173e5E93f6E2a045473fADe1b473e3b"
-export const ContractRentRegistrar = "0xcC5CFf4A86651d318e04Cdb090CE7670227dEF19"
-export const ContractPNSPaymentRouter = "0x1718D9B8725e73Ce896b7415ecB367cD32CCb551"
+export const ContractPharlias = "0xee81752c72c97Cb231aC51F0434900C65C536Eb0"
+export const ContractNFTRegistrar = "0x8D4b64Fb37DC5a73A54992E863887F2494635B76"
+export const ContractRentRegistrar = "0xfBC3e454397C8e6525D48ED2bE6A91000B97a2D9"
+export const ContractPNSPaymentRouter = "0xD8d8F5051fe75B49DF221dCB6EB0cC4c2d8b25F6"

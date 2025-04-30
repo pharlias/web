@@ -7,7 +7,9 @@ export const useAccountBalance = ({ decimal = 18 }: { token?: HexAddress, decima
   const { data: result, isLoading: bLoading, error: bError, refetch: bRefetch } = useBalance({
     address: address,
     query: {
-      enabled: !!address
+      enabled: !!address,
+      refetchInterval: 3000,
+      retryDelay: 1000,
     }
   })
 
