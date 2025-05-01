@@ -1,4 +1,4 @@
-export const ContractPharlias = "0xee81752c72c97Cb231aC51F0434900C65C536Eb0"
-export const ContractNFTRegistrar = "0x8D4b64Fb37DC5a73A54992E863887F2494635B76"
-export const ContractRentRegistrar = "0xfBC3e454397C8e6525D48ED2bE6A91000B97a2D9"
-export const ContractPNSPaymentRouter = "0xD8d8F5051fe75B49DF221dCB6EB0cC4c2d8b25F6"
+export const ContractPharlias = "0x1B2071628e2338aD3A5724F5D0a03308Ff2dBf05"
+export const ContractNFTRegistrar = "0xaab99Af46a08c915E1259bD724E97759a9AA2314"
+export const ContractRentRegistrar = "0x5921505FDF107b78A7EEA7A6CA786Fc42fEFe49f"
+export const ContractPNSPaymentRouter = "0x6C9f6dA9c8716f12F86a40d62a7eABcAf63bc494"
