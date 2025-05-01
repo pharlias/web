@@ -8,7 +8,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import styles from "./page.module.scss";
 import TabHistory from '@/components/tab/tab-history';
 import Loading from '@/components/loader/loading';
-import { useGetPoints } from '@/hooks/query/useGetPoints';
+import { useDomainUpdatedsUser } from '@/hooks/query/graphql/useDomainUpdatedsUser';
+import { useETHTransferToPNSUser } from '@/hooks/query/graphql/useETHTransferToPNSUser';
 
 function PageContent() {
   const router = useRouter();
@@ -18,9 +19,16 @@ function PageContent() {
   const tabFromUrl = searchParams.get('tab');
   const [activeTab, setActiveTab] = useState(tabFromUrl || 'rewards');
 
-  const { points } = useGetPoints();
+  const [points, setPoints] = useState(0);
 
-  console.log("Points: ", points);
+  const { data: domains } = useDomainUpdatedsUser();
+  const { data: transfers } = useETHTransferToPNSUser();
+
+  useEffect(() => {
+    if (domains.length > 0 || transfers.length > 0) {
+      setPoints((domains?.length || 0) * 20 + (transfers?.length || 0) * 5);
+    }
+  }, [domains, transfers]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -282,7 +290,7 @@ function PageContent() {
               )}
 
               {activeTab === 'history' && (
-                <TabHistory />
+                <TabHistory domains={domains} trnsfers={transfers} />
               )}
             </Flex>
           )}

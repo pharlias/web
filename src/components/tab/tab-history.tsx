@@ -1,16 +1,20 @@
 import { Column, Flex, Row, Text } from '@/ui/components';
 import React, { useState, useMemo } from 'react';
 import styles from "./page.module.scss";
-import { useETHTransferToPNSUser } from '@/hooks/query/graphql/useETHTransferToPNSUser';
 import { normalize } from '@/lib/bignumber';
 import { pharosNativeToken, tokensDecimals } from '@/constans/config';
-import { useDomainUpdatedsUser } from '@/hooks/query/graphql/useDomainUpdatedsUser';
+import { DomainUpdatedsCurType } from '@/types/graphql/domain-updated.type';
+import { ETHTransferToPNSsCurType } from '@/types/graphql/eth-transfer-to-pns.type';
 
-export default function TabHistory() {
-  const { data: transferData = [] } = useETHTransferToPNSUser();
-  const { data: pnsData = [] } = useDomainUpdatedsUser();
-
-  console.log(pnsData)
+export default function TabHistory({
+  domains = [],
+  transfers = []
+}: {
+  domains: DomainUpdatedsCurType[];
+  transfers: ETHTransferToPNSsCurType[];
+}) {
+  console.log("transferData", domains)
+  console.log("pnsData", transfers)
 
   const [typeFilter, setTypeFilter] = useState('transfer');
   const [dateFilter, setDateFilter] = useState('30');
@@ -29,21 +33,18 @@ export default function TabHistory() {
     return diffDays <= Number(days);
   }
 
-  // Filter transfer data based on date
   const filteredTransferData = useMemo(() => {
-    return transferData
+    return transfers
       .filter(tx => isWithinDateRange(tx.blockTimestamp, dateFilter))
       .sort((a, b) => Number(b.blockTimestamp) - Number(a.blockTimestamp)); // Sort by date, newest first
-  }, [transferData, dateFilter]);
+  }, [transfers, dateFilter]);
 
-  // Filter PNS data based on date
   const filteredPNSData = useMemo(() => {
-    return pnsData
+    return domains
       .filter(tx => isWithinDateRange(tx.blockTimestamp, dateFilter))
       .sort((a, b) => Number(b.blockTimestamp) - Number(a.blockTimestamp)); // Sort by date, newest first
-  }, [pnsData, dateFilter]);
+  }, [domains, dateFilter]);
 
-  // Determine if we should show empty state
   const isEmpty = typeFilter === 'transfer'
     ? filteredTransferData.length === 0
     : filteredPNSData.length === 0;
@@ -71,7 +72,6 @@ export default function TabHistory() {
         </select>
       </Row>
 
-      {/* Render Transfer Table or PNS Table based on filter */}
       {typeFilter === 'transfer' ? (
         <Column className={styles.transactionTable}>
           <Row className={styles.tableHeader}>

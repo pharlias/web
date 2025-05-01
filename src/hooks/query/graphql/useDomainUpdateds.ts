@@ -52,7 +52,6 @@ export const useDomainUpdateds = () => {
   });
 
   const fetchNextPage = useCallback(async () => {
-    // Only fetch if there are more pages and we're not already fetching
     if (!hasNextPageRef.current || !address || isFetching) {
       return;
     }
@@ -64,7 +63,6 @@ export const useDomainUpdateds = () => {
       return;
     }
 
-    // Continue fetching while there are more pages
     while (hasNextPageRef.current) {
       const result = await request<DomainUpdatedsType>(
         API_SUBGRAPH,
