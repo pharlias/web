@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import styles from "./page.module.scss";
 import TabHistory from '@/components/tab/tab-history';
 import Loading from '@/components/loader/loading';
+import { useGetPoints } from '@/hooks/query/useGetPoints';
 
 function PageContent() {
   const router = useRouter();
@@ -16,6 +17,10 @@ function PageContent() {
 
   const tabFromUrl = searchParams.get('tab');
   const [activeTab, setActiveTab] = useState(tabFromUrl || 'rewards');
+
+  const { points } = useGetPoints();
+
+  console.log("Points: ", points);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -82,7 +87,7 @@ function PageContent() {
               Your Rewards
             </Text>
             <Column className={styles.totalPoints}>
-              <Text className={styles.pointsValue}>0</Text>
+              <Text className={styles.pointsValue}>{String(points || "0")}</Text>
               <Text className={styles.pointsLabel}>Total Points</Text>
             </Column>
           </Row>

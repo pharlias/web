@@ -1,11 +1,12 @@
 import { gql } from "graphql-request";
 
-export const queryDomainRegistereds = () => {
+export const queryDomainRegistereds = (after: string | null = null) => {
   return gql`
     query {
       domainRegistereds(
         orderBy: "blockTimestamp"
         orderDirection: "desc"
+        ${after ? `after: "${after}"` : ""}
       ){
         items {
           blockNumber
@@ -17,18 +18,26 @@ export const queryDomainRegistereds = () => {
           tokenId
           transactionHash
         }
+        pageInfo {
+          startCursor
+          endCursor
+          hasPreviousPage
+          hasNextPage
+        }
+        totalCount
       }
     }
   `;
 };
 
-export const queryDomainRegisteredsUser = (address: string) => {
+export const queryDomainRegisteredsUser = (address: string, after: string | null = null) => {
   return gql`
     query {
       domainRegistereds(
         orderBy: "blockTimestamp"
         orderDirection: "desc"
         where: {owner: "${address}"}
+        ${after ? `after: "${after}"` : ""}
       ){
         items {
           blockNumber
@@ -40,6 +49,13 @@ export const queryDomainRegisteredsUser = (address: string) => {
           tokenId
           transactionHash
         }
+        pageInfo {
+          startCursor
+          endCursor
+          hasPreviousPage
+          hasNextPage
+        }
+        totalCount
       }
     }
   `;

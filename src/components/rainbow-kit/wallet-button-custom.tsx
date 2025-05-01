@@ -190,9 +190,6 @@ export default function WalletButtonCustom() {
                         }}
                       >
                         {name ? `${name}.pharos` : account.displayName}
-                        {account.displayBalance
-                          ? ` (${account.displayBalance})`
-                          : ''}
                       </Text>
                     </Button>
                   </Row>

@@ -10,8 +10,8 @@ export const useOwnerOfPNS = (name: string) => {
     args: [name],
     query: {
       enabled: !!name,
-      refetchInterval: 1000,
-      retryDelay: 1000,
+      refetchInterval: 2000,
+      retryDelay: 2000,
     }
   });
 
@@ -25,8 +25,8 @@ export const useOwnerOfPNS = (name: string) => {
     ],
     query: {
       enabled: !!nodeHash,
-      refetchInterval: 1000,
-      retryDelay: 1000,
+      refetchInterval: 2000,
+      retryDelay: 2000,
     }
   });
 

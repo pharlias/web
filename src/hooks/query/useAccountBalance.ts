@@ -8,8 +8,10 @@ export const useAccountBalance = ({ decimal = 18 }: { token?: HexAddress, decima
     address: address,
     query: {
       enabled: !!address,
-      refetchInterval: 3000,
-      retryDelay: 1000,
+      refetchInterval: 5000,
+      retryDelay: 5000,
+      staleTime: 60000,
+      refetchOnWindowFocus: false
     }
   })
 

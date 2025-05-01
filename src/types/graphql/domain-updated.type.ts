@@ -11,6 +11,13 @@ export type DomainUpdatedsType = {
       blockTimestamp: string;
       transactionHash: string;
     }>
+    pageInfo: {
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+      startCursor: string;
+      endCursor: string;
+    };
+    totalCount: number;
   };
 }
 
