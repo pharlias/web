@@ -290,7 +290,7 @@ function PageContent() {
               )}
 
               {activeTab === 'history' && (
-                <TabHistory domains={domains} trnsfers={transfers} />
+                <TabHistory domains={domains} transfers={transfers} />
               )}
             </Flex>
           )}
