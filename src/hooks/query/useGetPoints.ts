@@ -1,25 +1,13 @@
-import { ContractPharlias } from "@/constans/contracts";
-import { PharliasABI } from "@/lib/abis/PharliasABI";
-import { useAccount, useReadContract } from "wagmi";
+import { useDomainUpdatedsUser } from "./graphql/useDomainUpdatedsUser";
+import { useETHTransferToPNSUser } from "./graphql/useETHTransferToPNSUser";
 
 export const useGetPoints = () => {
-  const { address } = useAccount();
+  const { data: domains } = useDomainUpdatedsUser();
+  const { data: transfers } = useETHTransferToPNSUser();
 
-  const { data: points } = useReadContract({
-    address: ContractPharlias,
-    abi: PharliasABI,
-    functionName: "getPoints",
-    args: [
-      address
-    ],
-    query: {
-      enabled: !!address,
-      refetchInterval: 2000,
-      retryDelay: 2000,
-    }
-  });
+  const points = (domains?.length || 0) * 20 + (transfers?.length || 0) * 5;
 
-  return { 
-    points,
+  return {
+    points
   };
 }
