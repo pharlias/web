@@ -11,15 +11,17 @@ import { useAccountBalance } from '@/hooks/query/useAccountBalance';
 import { useTransferETHToPNS } from '@/hooks/mutation/useTransferETHToPNS';
 import { useDomainUpdateds } from '@/hooks/query/graphql/useDomainUpdateds';
 import { DomainUpdatedsCurType } from '@/types/graphql/domain-updated.type';
+import DialogSuccess from '@/components/dialog/dialog-success';
 
 export default function Page() {
   const [amount, setAmount] = useState("");
   const [pnsInput, setPnsInput] = useState("");
   const [filteredNameServices, setFilteredNameServices] = useState<DomainUpdatedsCurType[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const { bNormalized } = useAccountBalance({});
-  const { mutation } = useTransferETHToPNS();
+  const { mutation, txHash } = useTransferETHToPNS();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -84,13 +86,16 @@ export default function Page() {
       name: pnsInput,
       amount: amount,
     }, {
-      onSuccess: (data) => {
-        console.log("Transfer successful:", data);
-        alert("Transfer successful!");
+      onSuccess: () => {
+        setOpen(true);
+        setPnsInput("");
+        setAmount("");
       },
       onError: (error) => {
+        setOpen(true);
+        setPnsInput("");
+        setAmount("");
         console.error("Transfer failed:", error);
-        alert("Transfer failed. Please try again.");
       },
     });
   };
@@ -222,6 +227,12 @@ export default function Page() {
         </Column>
         <PageFooter />
       </Column>
+      <DialogSuccess
+        isOpen={open}
+        handleClose={() => setOpen(false)}
+        txHash={txHash as HexAddress || ""}
+        message={mutation.isSuccess ? "Transfer successful!" : mutation.error?.message || ""}
+      />
     </Column>
   );
 }
