@@ -14,7 +14,7 @@ const configApp = {
   links: {
     github: "https://github.com/pharlias",
     docs: "https://gitbook.io",
-    twitter: "https://x.com",
+    twitter: "https://x.com/pharlias",
     logo: "/trademark/icon-light.svg"
   },
   routes: [
