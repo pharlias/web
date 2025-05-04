@@ -51,13 +51,6 @@ export default function DialogSuccess({
       <Column gap="24" fillWidth>
         <Column gap="16" padding="24" background="neutral-weak" radius="l">
           <Row horizontal="space-between" vertical="center" fillWidth>
-            <Text variant="body-default-m" onBackground="neutral-medium">Expires</Text>
-            <Text variant="body-strong-m">
-              {new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toLocaleDateString()}
-            </Text>
-          </Row>
-
-          <Row horizontal="space-between" vertical="center" fillWidth>
             <Text variant="body-default-m" onBackground="neutral-medium">Transaction</Text>
             <Row gap="4" vertical="center">
               <Button
