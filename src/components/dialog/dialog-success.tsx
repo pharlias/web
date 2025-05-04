@@ -24,7 +24,7 @@ export default function DialogSuccess({
     <Dialog
       isOpen={isOpen}
       onClose={handleClose}
-      title="Registration Successful"
+      title="Transfer Successful"
       description={`${message || 'no description'}`}
       footer={
         <Row horizontal="space-between" gap="12" fillWidth>
@@ -35,13 +35,13 @@ export default function DialogSuccess({
           />
           <Button
             variant="primary"
-            label={"Manage Domain"}
+            label={"Okay"}
             style={{
               cursor: 'pointer',
               position: 'relative', 
               zIndex: 11 
             }}
-            onClick={() => window.location.href = '/manage'}
+            onClick={handleClose}
           />
         </Row>
       }

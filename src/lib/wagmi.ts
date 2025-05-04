@@ -23,5 +23,5 @@ export const pharos = {
 export const config = getDefaultConfig({
   appName: appName as string,
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID as string || '',
-  chains: [pharos],
+  chains: [pharos]
 })
